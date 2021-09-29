@@ -21,6 +21,7 @@ def login():
         if (option == "1"):
             usefulLink()
         elif (option == "2"):
+            print(username)
             importantLink(username)
         else:
             userPage(username)

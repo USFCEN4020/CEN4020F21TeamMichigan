@@ -1,3 +1,6 @@
+from db_connection import db_conn
+
+
 def general():
     from inCollege import signup
     print("Type your option to view: ")
@@ -14,6 +17,7 @@ def general():
         signup()
     elif (option == "2"):
         print("\nWe're here to help!\n")
+
     elif (option == "3"):
 
         print("\nWelcome to InCollege, the world's largest college student netwoek with many users " +
@@ -62,6 +66,50 @@ def usefulLink():
         usefulLink()
 
 
+def email(username):
+
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    cur.execute(
+        f"UPDATE control SET email = false WHERE username ='{username}';")
+    conn.commit()
+
+
+def sms(username):
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    cur.execute(
+        f"UPDATE control SET sms = false WHERE username ='{username}';")
+    conn.commit()
+
+
+def advertising(username):
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    cur.execute(
+        f"UPDATE control SET advertising = false WHERE username ='{username}';")
+    conn.commit()
+
+
+def language(username, choice):
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    if (choice == 1):
+        cur.execute(
+            f"UPDATE control SET language = 'English' WHERE username ='{username}';")
+    if (choice == 2):
+        cur.execute(
+            f"UPDATE control SET language = 'Spanish' WHERE username ='{username}';")
+    conn.commit()
+
+
 def importantLink(username):
     from inCollege import main
     print("Type your option to view: ")
@@ -90,13 +138,10 @@ def importantLink(username):
         print("\nCreating an account hereby signifies that the user has agreeed to the terms and conditions of the app. All personal data is protected to the extent of the affiliated owners hardware.\n")
 
     elif (option == "5"):
-        if(username is not None):
-            print("")
-        else:
-            print("You have to log in to use this feature!")
+        print("\nAll personal data is protected to the extent of the affiliated owners hardware. The affiliated owners are not responsible for data breaches and or attacks to the hardware physically or otherwise.\n")
 
     elif (option == "6"):
-        print("\nAll personal data is protected to the extent of the affiliated owners hardware. The affiliated owners are not responsible for data breaches and or attacks to the hardware physically or otherwise.\n")
+        print("\nUser cookies are used to ensure the convience of our user. All personal data is protected within the context of our hardware security.\n")
 
     elif (option == "7"):
         print("\nAll text and images associated to the site are the property of the owners. Any use of the content outside the context of this application is prohibited by law.\n")
@@ -105,11 +150,35 @@ def importantLink(username):
         print("\nUser cookies are used to ensure the convience of our user. All personal data is protected within the context of our hardware security.\n")
 
     elif (option == "9"):
-        print("\nGuests have limited access to the site. In order to ensure full access a valid account must be created and verified.\n")
+        if(username is not None):
+            print("Please choose an option:\n 1. Turn off InCollege Email\n 2. Turn off SMS\n 3. Turn off Targeted Advertising\n 4. Go back\n")
+            choice = input()
+            while (choice != "1" and choice != "2" and choice != "3" and choice != "4"):
+                choice = input()
+            if (choice == "1"):
+                email(username)
+            elif (choice == "2"):
+                sms(username)
+            elif (choice == "3"):
+                advertising(username)
+            else:
+                importantLink(username)
+        else:
+            print("You have to log in in order to use this feature!")
 
     elif (option == "10"):
         if(username is not None):
             print("Select your language: \n1. English \n2. Spanish")
+            choice = input()
+            while (choice != "1" and choice != "2" and choice != "3"):
+                choice = input()
+            if (choice == "1"):
+                language(username, 1)
+            elif (choice == "2"):
+                language(username, 2)
+            else:
+                importantLink(username)
+
         else:
             print("You have to log in to use this feature!")
 
