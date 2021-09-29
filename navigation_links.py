@@ -181,6 +181,7 @@ def importantLink(username):
                 importantLink(username)
             elif (choice == "3"):
                 advertising(username)
+                importantLink(username)
             else:
                 importantLink(username)
 
