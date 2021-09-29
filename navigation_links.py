@@ -25,15 +25,19 @@ def general():
 
     elif (option == "4"):
         print("\nIn College Pressroom: Stay on top of the lastest news, updates, and reports.\n")
+        general()
 
     elif (option == "5"):
         print("\nUnder construction\n")
+        general()
 
     elif (option == "6"):
         print("\nUnder construction\n")
+        general()
 
     elif (option == "7"):
         print("\nUnder construction\n")
+        general()
 
     elif (option == "8"):
         usefulLink()
@@ -52,12 +56,15 @@ def usefulLink():
         general()
     elif (option == "2"):
         print("\nUnder construction\n")
+        usefulLink()
 
     elif (option == "3"):
         print("\nUnder construction\n")
+        usefulLink()
 
     elif (option == "4"):
         print("\nUnder construction\n")
+        usefulLink()
 
     elif (option == "5"):
         main()
@@ -127,60 +134,74 @@ def importantLink(username):
     option = input()
     if (option == "1"):
         print("\nAll rights are reserved for the inCollege Team Michigan. All images and or text afiliated to this site is as well under the ownership off all members aboard the team. All accounts created withing the site are private from third party sources and all data is to be stored on the affiliated owners server.\n")
+        importantLink(username)
 
     elif (option == "2"):
-        print("/nThis website was created with the intent of promoting success in graduation college students./n")
+        print("\nThis website was created with the intent of promoting success in graduation college students.\n")
+        importantLink(username)
 
     elif (option == "3"):
         print("\nAs of now this program does not comply with any additional functionality for disabilities\n")
+        importantLink(username)
 
     elif (option == "4"):
         print("\nCreating an account hereby signifies that the user has agreeed to the terms and conditions of the app. All personal data is protected to the extent of the affiliated owners hardware.\n")
+        importantLink(username)
 
     elif (option == "5"):
         print("\nAll personal data is protected to the extent of the affiliated owners hardware. The affiliated owners are not responsible for data breaches and or attacks to the hardware physically or otherwise.\n")
+        importantLink(username)
 
     elif (option == "6"):
         print("\nUser cookies are used to ensure the convience of our user. All personal data is protected within the context of our hardware security.\n")
+        importantLink(username)
 
     elif (option == "7"):
         print("\nAll text and images associated to the site are the property of the owners. Any use of the content outside the context of this application is prohibited by law.\n")
+        importantLink(username)
 
     elif (option == "8"):
         print("\nUser cookies are used to ensure the convience of our user. All personal data is protected within the context of our hardware security.\n")
+        importantLink(username)
 
     elif (option == "9"):
-        if(username is not None):
+        if(username == "None"):
+            print("You have to log in in order to use this feature!")
+            importantLink(username)
+        else:
             print("Please choose an option:\n 1. Turn off InCollege Email\n 2. Turn off SMS\n 3. Turn off Targeted Advertising\n 4. Go back\n")
             choice = input()
             while (choice != "1" and choice != "2" and choice != "3" and choice != "4"):
                 choice = input()
             if (choice == "1"):
                 email(username)
+                importantLink(username)
             elif (choice == "2"):
                 sms(username)
+                importantLink(username)
             elif (choice == "3"):
                 advertising(username)
             else:
                 importantLink(username)
-        else:
-            print("You have to log in in order to use this feature!")
 
     elif (option == "10"):
-        if(username is not None):
+        if(username == "None"):
+            print("You have to log in to use this feature!")
+            importantLink(username)
+
+        else:
             print("Select your language: \n1. English \n2. Spanish")
             choice = input()
             while (choice != "1" and choice != "2" and choice != "3"):
                 choice = input()
             if (choice == "1"):
                 language(username, 1)
+                importantLink(username)
             elif (choice == "2"):
                 language(username, 2)
+                importantLink(username)
             else:
                 importantLink(username)
-
-        else:
-            print("You have to log in to use this feature!")
 
     elif (option == "11"):
         main()

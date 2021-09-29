@@ -55,7 +55,7 @@ def main():
     if choice == "1":
         usefulLink()
     elif choice == "2":
-        importantLink(None)
+        importantLink("None")
     elif choice == "3":
         print("My Story:")
         print("I had a low GPA and no experience while in college. My LinkedIn profile was blank because I hadn't done anything yet. That was until I found inCollege!")
