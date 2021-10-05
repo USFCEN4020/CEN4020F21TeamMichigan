@@ -2,34 +2,42 @@ from authorization import isAuthorized
 from add_user import canAdd, addUser, totalAccount
 from find_user import findUser
 from navigation_links import usefulLink, importantLink
+from user_profile import updateProfile, viewProfile
 
 # Handles logins
 
 
 def login():
-    from user_page import userPage
     username = input("Username: ")
     password = input("Password: ")
     next = isAuthorized(username, password)
     if (next):
-        print('working')
-        print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Continue to user page")
-        option = input()
-        while (option != "1" and option != "2" and option != "3"):
-            print("Invalid option")
-            option = input()
-        if (option == "1"):
-            usefulLink()
-        elif (option == "2"):
-            print(username)
-            importantLink(username)
-        else:
-            userPage(username)
-
+        mainMenu(username)
     else:
         print("Login failed...")
         print("Please try again")
         login()
+
+
+def mainMenu(username):
+    from user_page import userPage
+    print('working')
+    print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
+    option = input()
+    while (option != "1" and option != "2" and option != "3" and option != "4" and option != "5"):
+        print("Invalid option")
+        option = input()
+    if (option == "1"):
+        usefulLink()
+    elif (option == "2"):
+        print(username)
+        importantLink(username)
+    elif (option == "3"):
+        updateProfile(username)
+    elif (option == "4"):
+        viewProfile(username)
+    else:
+        userPage(username)
 
 
 # handles signups

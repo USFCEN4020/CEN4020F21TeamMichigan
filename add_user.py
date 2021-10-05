@@ -56,10 +56,18 @@ def addUser():
         cur = conn.cursor()
 
         # insert user info
-        query = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
-        controlTable = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
-        cur.execute(query, (username, password, first, last))
-        cur.execute(controlTable, (username, 1, 1, 1, 'English'))
+        auth = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
+        control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
+        profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+        experiences = f"INSERT INTO profile(username, title, employer, date_started, date_ended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+        education = f"INSERT INTO profile(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+
+        cur.execute(auth, (username, password, first, last))
+        cur.execute(control, (username, 1, 1, 1, 'English'))
+        cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
+        cur.execute(experiences, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
+        cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
+
         conn.commit()
         return 1
     else:
