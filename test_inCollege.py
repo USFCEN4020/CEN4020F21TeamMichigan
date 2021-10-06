@@ -61,6 +61,7 @@ def test_general_about():
 
 #Press displays:
 #In College Pressroom: Stay on top of the latest news, updates, and reports
+#empty list pop fail
 def test_general_press():
     set_keyboard_input(["4"])
     general()
@@ -68,6 +69,7 @@ def test_general_press():
     assert output == gen_output + ["\nIn College Pressroom: Stay on top of the lastest news, updates, and reports.\n"]
 
 #Blog, Careers, and Developers will display "under construction"
+#empty list pop fail
 def test_general_rest():
     set_keyboard_input(["5"])
     general()
@@ -100,6 +102,7 @@ links = ['Type your option to view: ',
     "11. Go back"]
 ### inCollege Important links test ###
 ##Copyright notice
+#empty list pop fail
 def test_copyright_notice():
     set_keyboard_input(["1"])
     importantLink("kevin23")
@@ -108,6 +111,7 @@ def test_copyright_notice():
 
 
 ##About
+#empty list pop fail
 def test_about():
     set_keyboard_input(["2"])
     importantLink("kevin23")
@@ -116,6 +120,7 @@ def test_about():
 
 
 ##Accessibility
+#empty list pop fail
 def test_access():
     set_keyboard_input(["3"])
     importantLink("kevin23")
@@ -124,6 +129,7 @@ def test_access():
 
 
 ##User Agreement
+#empty list pop fail
 def test_user_agreement():
     set_keyboard_input(["4"])
     importantLink("kevin23")
@@ -132,6 +138,7 @@ def test_user_agreement():
 
 
 ##Privacy Policy
+#empty list pop fail
 def test_privacy():
     set_keyboard_input(["5"])
     importantLink("kevin23")
@@ -140,6 +147,7 @@ def test_privacy():
 
 
 ##cookie policy
+#empty list pop fail
 def test_cookie():
     set_keyboard_input(["6"])
     importantLink("kevin23")
@@ -148,6 +156,7 @@ def test_cookie():
 
 
 ##Copyright Policy
+#empty list pop fail
 def test_copyright_policy():
     set_keyboard_input(["7"])
     importantLink("kevin23")
@@ -156,6 +165,7 @@ def test_copyright_policy():
 
 
 ##Brand Policy
+#empty list pop fail
 def test_brand_policy():
     set_keyboard_input(["8"])
     importantLink("kevin23")
@@ -164,6 +174,7 @@ def test_brand_policy():
 
 
 ##Guest Controls
+#empty list pop fail
 def test_guest_controls():
     set_keyboard_input(["9"])
     importantLink("kevin23")
@@ -172,6 +183,7 @@ def test_guest_controls():
 
 
 ##Languages
+#empty list pop fail
 def test_languages():
     set_keyboard_input(["10"])
     importantLink("kevin23")    #insert a valid account username to test
