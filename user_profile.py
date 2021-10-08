@@ -99,7 +99,7 @@ def updateExp(username):
     
     print("Please enter the location of this job")
     location = input()
-    location = = ' '.join(word[0].upper() + word[1:] for word in location.split())
+    location =' '.join(word[0].upper() + word[1:] for word in location.split())
     cur.execute(
         f"UPDATE experiences SET location = '{location}' WHERE username ='{username}';")
     conn.commit()
@@ -115,7 +115,32 @@ def updateExp(username):
 
 
 def updateEdu(username):
-    print("")
+
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    
+    print("Please enter the Univeristy you attended")
+    university = input()
+    university = ' '.join(word[0].upper() + word[1:] for word in university.split())
+    cur.execute(
+        f"UPDATE education SET school = '{university}' WHERE username ='{username}';")
+    conn.commit()
+
+    print("Please enter the degree recived")
+    degree = input()
+    degree = ' '.join(word[0].upper() + word[1:] for word in degree.split())
+    cur.execute(
+        f"UPDATE education SET degree = '{degree}' WHERE username ='{username}';")
+    conn.commit()
+
+    print("Please enter the year you graduated (yyyy)")
+    year = input()
+    cur.execute(
+        f"UPDATE education SET year_attended = '{year}' WHERE username ='{username}';")
+    conn.commit()
+
+
     print("Update successfully!")
     updateProfile(username)
 
