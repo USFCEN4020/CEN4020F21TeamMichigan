@@ -3,6 +3,7 @@ from add_user import canAdd, addUser, totalAccount
 from find_user import findUser
 from navigation_links import usefulLink, importantLink
 from user_profile import updateProfile, viewProfile
+from db_connection import createTables
 
 # Handles logins
 
@@ -53,6 +54,7 @@ def signup():
 
 
 def main():
+    createTables()
     print(" ")
     print("---welcome to inCollege!---")
 
