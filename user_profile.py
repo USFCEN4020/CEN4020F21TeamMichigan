@@ -66,7 +66,50 @@ def updateAbout(username):
 
 
 def updateExp(username):
-    print("")
+
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    print("Please enter your job title")
+    job = input()
+    job = ' '.join(word[0].upper() + word[1:] for word in job.split())
+    cur.execute(
+        f"UPDATE experiences SET title = '{job}' WHERE username ='{username}';")
+    conn.commit()
+
+    print("Please enter your employer's name")
+    employer = input()
+    employer = ' '.join(word[0].upper() + word[1:] for word in employer.split())
+    cur.execute(
+        f"UPDATE experiences SET employer = '{employer}' WHERE username ='{username}';")
+    conn.commit()
+
+    print("Please enter your starting date (mm/dd/yy)")
+    start_date = input()
+    cur.execute(
+        f"UPDATE experiences SET date_started = '{start_date}' WHERE username ='{username}';")
+    conn.commit()
+
+    print ("Please enter your ending date (mm/dd/yy)")
+    end_date = input()
+    cur.execute(
+        f"UPDATE experiences SET date_ended = '{end_date}' WHERE username ='{username}';")
+    conn.commit()
+    
+    print("Please enter the location of this job")
+    location = input()
+    location = = ' '.join(word[0].upper() + word[1:] for word in location.split())
+    cur.execute(
+        f"UPDATE experiences SET location = '{location}' WHERE username ='{username}';")
+    conn.commit()
+
+    print("Please enter a discription of your job")
+    description =input()
+    cur.execute(
+        f"UPDATE experiences SET description = '{description}' WHERE username ='{username}';")
+    conn.commit()
+
     print("Update successfully!")
     updateProfile(username)
 
