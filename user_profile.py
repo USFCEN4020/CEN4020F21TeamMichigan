@@ -71,44 +71,69 @@ def updateExp(username):
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
+
+    print("Enter 1 if you would like to add a work experience or 2 if you would like to edit a work experience")
+    option = input()
+
+    if option == 2:
+        print("Here is your work experience")
+        cur.execute("SELECT * FROM experiences")
+        table = cur.fetchall()
+        for row in table:
+            print (row)
+            print("\n")
+        print("Please enter the title you would like to edit")
+        titleInput = input()
+
     print("Please enter your job title")
     job = input()
     job = ' '.join(word[0].upper() + word[1:] for word in job.split())
-    cur.execute(
-        f"UPDATE experiences SET title = '{job}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET title = '{job}' WHERE username ='{username}';")
+        conn.commit()
 
     print("Please enter your employer's name")
     employer = input()
     employer = ' '.join(word[0].upper() + word[1:] for word in employer.split())
-    cur.execute(
-        f"UPDATE experiences SET employer = '{employer}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET employer = '{employer}' WHERE username ='{username}';")
+        conn.commit()
 
     print("Please enter your starting date (mm/dd/yy)")
     start_date = input()
-    cur.execute(
-        f"UPDATE experiences SET date_started = '{start_date}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET date_started = '{start_date}' WHERE username ='{username}';")
+        conn.commit()
 
     print ("Please enter your ending date (mm/dd/yy)")
     end_date = input()
-    cur.execute(
-        f"UPDATE experiences SET date_ended = '{end_date}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET date_ended = '{end_date}' WHERE username ='{username}';")
+        conn.commit()
     
     print("Please enter the location of this job")
     location = input()
     location =' '.join(word[0].upper() + word[1:] for word in location.split())
-    cur.execute(
-        f"UPDATE experiences SET location = '{location}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET location = '{location}' WHERE username ='{username}';")
+        conn.commit()
 
     print("Please enter a discription of your job")
     description =input()
-    cur.execute(
-        f"UPDATE experiences SET description = '{description}' WHERE username ='{username}';")
-    conn.commit()
+    if option == 2:
+        cur.execute(
+            f"UPDATE experiences SET description = '{description}' WHERE username ='{username}';")
+        conn.commit()
+
+    if option != 2:
+        cur.execute(
+            f"INSERT INTO experiences (username ,title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'job'}', '{'employer'}', '{'start_date'}', '{'end_date'}', '{'location'}', '{'description'}')")
+        conn.commit()
 
     print("Update successfully!")
     updateProfile(username)
@@ -119,7 +144,7 @@ def updateEdu(username):
     conn = db_conn()
     # Open a cursor to perform database operations
     cur = conn.cursor()
-    
+
     print("Please enter the Univeristy you attended")
     university = input()
     university = ' '.join(word[0].upper() + word[1:] for word in university.split())
@@ -205,6 +230,42 @@ def viewProfile(username):
     about = cur.fetchone()
     conn.commit()
 
+    # get title info
+    cur.execute(
+        f"SELECT title FROM experiences WHERE username ='{username}';")
+    title = cur.fetchall()
+    conn.commit()
+
+    # get employer info
+    cur.execute(
+        f"SELECT employer FROM experiences WHERE username ='{username}';")
+    employer = cur.fetchall()
+    conn.commit()
+
+    # get start date info
+    cur.execute(
+        f"SELECT date_started FROM experiences WHERE username ='{username}';")
+    date_started = cur.fetchall()
+    conn.commit()
+
+    # get end date info
+    cur.execute(
+        f"SELECT date_ended FROM experiences WHERE username ='{username}';")
+    date_ended = cur.fetchall()
+    conn.commit()
+
+    # get location info
+    cur.execute(
+        f"SELECT location FROM experiences WHERE username ='{username}';")
+    location = cur.fetchall()
+    conn.commit()
+
+    # get description info
+    cur.execute(
+        f"SELECT description FROM experiences WHERE username ='{username}';")
+    description = cur.fetchall()
+    conn.commit()
+
     # display profile
     print('---------------------')
     print(firstName[0], end=" ")
@@ -222,3 +283,11 @@ def viewProfile(username):
 
     print("About: ", end="")
     print(about[0])
+
+    print('---------------------')
+    print('Past Experience')
+    print('---------------------')
+
+
+
+
