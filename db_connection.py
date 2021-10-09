@@ -13,8 +13,6 @@ def createTables():
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-
-# f"UPDATE control SET email = false WHERE username ='{username}';"
     cur.execute(f"CREATE TABLE IF NOT EXISTS auth(username VARCHAR(50) PRIMARY KEY, password VARCHAR(50) NOT NULL, first_name VARCHAR(50) NOT NULL, last_name VARCHAR(50) NOT NULL);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS jobs (id SERIAL PRIMARY KEY, title VARCHAR(50) NOT NULL, description VARCHAR(255) NOT NULL, employer VARCHAR(50) NOT NULL, location VARCHAR(50) NOT NULL, name VARCHAR(50) NOT NULL, salary REAL);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS control (username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), email boolean, sms boolean , advertising boolean, language VARCHAR(20));")
