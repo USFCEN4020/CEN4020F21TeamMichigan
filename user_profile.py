@@ -1,68 +1,68 @@
 from db_connection import db_conn
 
 
-def updateTitle(username):
-    print("Enter your title: ")
-    title = input()
-
-    conn = db_conn()
-    # Open a cursor to perform database operations
-    cur = conn.cursor()
-
-    cur.execute(
-        f"UPDATE profile SET title = '{title}' WHERE username ='{username}';")
-    conn.commit()
-
-    print("Update successfully!")
-    updateProfile(username)
-
-
-def updateMajor(username):
-    print("Enter your major: ")
-    # major starts w uppercase and the rest is lower case
-    major = input()
-
-    conn = db_conn()
-    # Open a cursor to perform database operations
-    cur = conn.cursor()
-
-    cur.execute(
-        f"UPDATE profile SET major = '{major}' WHERE username ='{username}';")
-    conn.commit()
-    print("Update successfully!")
-    updateProfile(username)
+def updateTitle(username, title):
+    try:
+        conn = db_conn()
+        # Open a cursor to perform database operations
+        cur = conn.cursor()
+    
+        cur.execute(
+            f"UPDATE profile SET title = '{title}' WHERE username ='{username}';")
+        conn.commit()
+        print("Update successfully!")
+        return 1
+    except:
+        print("Something is wrong in updateTitle()")
+        return 0
 
 
-def updateUniName(username):
-    print("Enter your university: ")
-    # university name starts w uppercase and the rest is lower case
-    uni = input()
+def updateMajor(username, major):
+    try:
+        conn = db_conn()
+        # Open a cursor to perform database operations
+        cur = conn.cursor()
 
-    conn = db_conn()
-    # Open a cursor to perform database operations
-    cur = conn.cursor()
+        cur.execute(
+            f"UPDATE profile SET major = '{major}' WHERE username ='{username}';")
+        conn.commit()
+        print("Update successfully!")
+        return 1
+    except:
+        print("Something is wrong in updateMajor")
+        return 0
 
-    cur.execute(
-        f"UPDATE profile SET university = '{uni}' WHERE username ='{username}';")
-    conn.commit()
-    print("Update successfully!")
-    updateProfile(username)
+
+def updateUniName(username, uni):
+    try:
+        conn = db_conn()
+        # Open a cursor to perform database operations
+        cur = conn.cursor()
+
+        cur.execute(
+            f"UPDATE profile SET university = '{uni}' WHERE username ='{username}';")
+        conn.commit()
+        print("Update successfully!")
+        return 1
+    except:
+        print("Something is wrong in updateUniName")
+        return 0
 
 
-def updateAbout(username):
-    print("What should people know about you? ")
-    # university name starts w uppercase and the rest is lower case
-    abt = input()
+def updateAbout(username, abt):
+    try:
+        conn = db_conn()
+        # Open a cursor to perform database operations
+        cur = conn.cursor()
 
-    conn = db_conn()
-    # Open a cursor to perform database operations
-    cur = conn.cursor()
-
-    cur.execute(
-        f"UPDATE profile SET about = '{abt}' WHERE username ='{username}';")
-    conn.commit()
-    print("Update successfully!")
-    updateProfile(username)
+        cur.execute(
+            f"UPDATE profile SET about = '{abt}' WHERE username ='{username}';")
+        conn.commit()
+        print("Update successfully!")
+        return 1
+    except:
+        print("Something is wrong in updateUniName")
+        return 0
 
 
 def updateExp(username):
@@ -147,11 +147,12 @@ def updateExp(username):
         conn.commit()
 
     print("Update successfully!")
-    updateProfile(username)
+    return 1
 
 
 def updateEdu(username):
 
+    return 1
     conn = db_conn()
     # Open a cursor to perform database operations
     cur = conn.cursor()
@@ -178,7 +179,7 @@ def updateEdu(username):
 
 
     print("Update successfully!")
-    updateProfile(username)
+    return 1
 
 
 def updateProfile(username):
@@ -190,17 +191,35 @@ def updateProfile(username):
         print('Invalid option. Please re-enter: ')
         option = input()
     if (option == '1'):
-        updateTitle(username)
+        # title starts w uppercase and the rest is lower case
+        print("Enter your title: ")
+        title = input()
+        updateTitle(username, title)
+        updateProfile(username)
     elif (option == '2'):
-        updateMajor(username)
+        print("Enter your major: ")
+        # major starts w uppercase and the rest is lower case
+        major = input()
+        updateMajor(username, major)
+        updateProfile(username)
     elif (option == '3'):
-        updateUniName(username)
+        print("Enter your university: ")
+        # university name starts w uppercase and the rest is lower case
+        uni = input()
+        updateUniName(username, uni)
+        updateProfile(username)
     elif (option == '4'):
-        updateAbout(username)
+        print("What should people know about you? ")
+        # university name starts w uppercase and the rest is lower case
+        abt = input()
+        updateAbout(username, abt)
+        updateProfile(username)
     elif (option == '5'):
         updateExp(username)
+        updateProfile(username)
     elif (option == '6'):
         updateEdu(username)
+        updateProfile(username)
     else:
         mainMenu(username)
 
@@ -349,6 +368,8 @@ def viewProfile(username):
 
     print("Year Graduated: ", end="")
     print(year_attended[0])
+    
+    return 1
 
         
 

@@ -74,3 +74,32 @@ def addUser():
     else:
         print("Password must include minimum of 8 characters, maximum of 12 characters, at least one capital letter, one digit, one non-alpha character")
         addUser()
+        
+
+# Defult user for testing purposes. This is not used for any other context.
+def addDefaultUser():
+    username = "defultUser"
+    password = "password1"
+    first = "defultMan"
+    last = "Harold"
+
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    # insert user info
+    auth = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
+    control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
+    profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+    experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+    education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+
+    cur.execute(auth, (username, password, first, last))
+    cur.execute(control, (username, 1, 1, 1, 'English'))
+    cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
+    cur.execute(experiences, (username, 'NULL', 'NULL',
+                    'NULL', 'NULL', 'NULL', 'NULL'))
+    cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
+
+    conn.commit()
+    return 1
