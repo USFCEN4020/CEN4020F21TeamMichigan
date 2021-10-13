@@ -72,7 +72,7 @@ def test_updateUniName(username, uni, result):
                             ('nhi34', 'newNhi', 1)
     ]
 
-) 
+) #Possibly best way to test functions
 def test_updateAbout(username, abt, result):
     assert updateAbout(username, abt) == result
      
@@ -89,3 +89,6 @@ def test_updateExp():
     
 def test_updateEdu():
     assert updateEdu('defultUser') == 1
+
+
+########################################################## EPIC 5 ##############################################################
