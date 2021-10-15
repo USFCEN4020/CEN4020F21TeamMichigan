@@ -55,6 +55,7 @@ def isUsernameTaken(username):
         return False
     return True
 
+
 def addUser():
     # Open a cursor to perform database operations
     conn = db_conn()
@@ -83,6 +84,7 @@ def addUser():
     profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+    
 
     cur.execute(auth, (username, password, first, last))
     cur.execute(control, (username, 1, 1, 1, 'English'))

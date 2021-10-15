@@ -1,5 +1,6 @@
 from inCollege import login
 from intership_page import jobSearch
+from db_connection import db_conn
 
 """
 under construction function to print
@@ -48,26 +49,74 @@ def userPage(userName):
             print("\nPlease enter a valid input\n")
             userPage()
 
+#this function takes two usernames and adds them to the table of friends
+#with pending = false
+def makeFriends(user_1, user_2):
+    if user_1 == user_2:
+        return False
+    pending = True
+    conn = db_conn()
+    cur = conn.cursor()
+    #make sure that the two users are not already friends
+    cur.execute(
+        f"SELECT * FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}')"
+    )
+    results = cur.fetchall()
+    if len(results) != 0:
+        print("You are already friends")
+        return
 
-"""
-Page under construction
-"""
+    cur.execute(
+        f"INSERT INTO friends(user_1, user_2, pending) VALUES('{user_1}', '{user_2}', '{pending}');"
+    )
+
+
+#searches the database for 
+def lastNameSearch(user,lastname):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM auth WHERE last_name = '{lastname}' AND NOT username = '{user}';"
+    )
+    results = cur.fetchall()
+    if len(results) == 0:
+        print("There are no users with this last name")
+        return NULL
+
+    for i in range(len(results)):
+        print(results[i])
+    
+    if makeFriends(user, results[0]):
+        print("Friend request pending")
+    
+    
+
+
+
 
 #this funciton prompts the user to enter a search method and 
-def findSomeonePage():
-    print("Find someone by searching by:\n1.\tLast Name\n2.\tUniversity\n3.\tMajor\n4.\tGo Back")
-    search_method = int(input())
-    if search_method == 1:
-        lastname = input("Please enter a last name")
-        lastNameSearch(lastname)
-    elif search_method == 2:
-        uni = input("Please enter a Univeristy")
-        universitySearch()
-    elif search_method == 3:
-        major = input("Please enter a Major")
-        majorSearch()
-    elif search_method == 4:
-        return
+def findSomeonePage(username):
+    while True:
+        print("Find someone by searching by:\n1.\tLast Name\n2.\tUniversity\n3.\tMajor\n4.\tGo Back")
+        search_method = int(input())
+
+        if search_method == 1:
+            lastname = input("Please enter a last name")
+            usrname = lastNameSearch(username, lastname)
+            if usrname == NULL:
+                print("Please try again\n")
+                continue
+            
+        elif search_method == 2:
+            uni = input("Please enter a Univeristy")
+            universitySearch()
+
+        elif search_method == 3:
+            major = input("Please enter a Major")
+            majorSearch()
+
+        elif search_method == 4:
+            return
 
 
 
