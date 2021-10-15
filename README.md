@@ -13,3 +13,13 @@ Please note: (host='localhost', port='5432', database='incollege', user='postgre
 
 \*To set up your python 3 environment with the necessary libraries you'll need to install the packages in the requirements.txt
 just look up 'psycopg2 install [inset your os]'
+
+list of all tables in the database with column names:
+    auth:
+        username, password, first_name, last_name
+    control:
+        username, email, sms, advertising, language
+    experiences:
+        username, title, employer, date_started, date_ended, location, description
+    education:
+        username, school, degree, year_attended

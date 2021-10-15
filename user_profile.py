@@ -225,8 +225,8 @@ def updateProfile(username):
 
 
 def viewProfile(username):
-    conn = db_conn()
     # Open a cursor to perform database operations
+    conn = db_conn()
     cur = conn.cursor()
 
     # get first name
@@ -320,17 +320,21 @@ def viewProfile(username):
     print(lastName[0])
     print('---------------------')
 
-    print("Title: ", end="")
-    print(title[0])
+    if len(title) > 0:
+        print("Title: ", end="")
+        print(title[0])
 
-    print("Major: ", end="")
-    print(major[0])
+    if len(major) > 0:
+        print("Major: ", end="")
+        print(major[0])
 
-    print("University: ", end="")
-    print(uni[0])
-
-    print("About: ", end="")
-    print(about[0])
+    if len(uni) > 0:
+        print("University: ", end="")
+        print(uni[0])
+        
+    if len(about) > 0:
+        print("About: ", end="")
+        print(about[0])
 
     print('---------------------')
     print('Past Experience')
