@@ -1,4 +1,4 @@
-from inCollege import login
+from inCollege import login, findPendingFriendRequests
 from intership_page import jobSearch
 from db_connection import db_conn
 
@@ -22,7 +22,7 @@ log out
 """
 
 
-def userPage(userName):
+def userPage(username):
     while True:
         print("-----------------------------------------")
         print("Please select one of the three options")
@@ -31,26 +31,107 @@ def userPage(userName):
         print("3.   Log out")
         print("4.   job Search")
         print("5.   Go Back")
+        print("6.   Show my Network")
         print("-----------------------------------------")
 
         usr_input = int(input("Please enter your selection:\t"))
 
         if usr_input == 1:
-            findSomeonePage(userName)
+            findSomeonePage(username)
         elif usr_input == 2:
-            learnSkillPage(userName)
+            learnSkillPage(username)
         elif usr_input == 3:
             login()
         elif usr_input == 4:
-            jobSearch(userName)
+            jobSearch(username)
         elif usr_input == 5:
             return
+        elif usr_input == 6:
+            showNetwork(username)
         else:
             print("\nPlease enter a valid input\n")
             userPage()
 
-#this function takes two usernames and adds them to the table of friends
-#with pending = false
+
+#this function finds all the current friends that the user has and returns them
+#as a tuple of tuples of the rows that matched the query
+#i.e. ((user_1 value, user_2 value, pending value),(user_1 value, user_2 value, pending value), ...)
+#returns a list of tuples that contain a row from auth the the user is friends with
+def findUserFriends(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM friends WHERE (user_1='{username}' OR user_2='{username}') AND (pending = FALSE);"
+    )
+    results = cur.fetchall()
+    friends = []
+    for i in range(len(results)):
+        if results[i][0] != username:
+            friends.append(results[i][0])
+        elif results[i][1] != username:
+            friends.append(results[i][1])
+        
+    ret = []
+    for i in range(len(friends)):
+        cur.execute(
+            f"SELECT * FROM auth WHERE username='{friends[i]}'"
+        )
+        ret.append(cur.fetchall())
+
+    return ret
+
+
+#this function deletes the row where the two users exist
+#this effectively removes the friendship or it can also
+#be used to reject friend requests
+def removeFriend(user_1, user_2):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"DELETE * FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}');"
+    )
+
+def showNetwork(username):
+    while True:
+        print("----------------------------")
+        pending_friends = findPendingFriendRequests(username)
+        if len(pending_friends) > 0:
+            print("You have ", len(pending_friends), " pending friend requests")
+        print("1.   View my Current Network")
+        print("2.   View my Pending Friend Requests")
+        print("#.   Go Back")
+
+        usr_input = int(input())
+        if usr_input == 1:
+            friends = findUserFriends(username)
+            if len(friends) == 0:
+                print("You have no friends")
+                continue
+            print("Here is a list of people you have connected with")
+            for i in range(len(friends)):
+                print(i, ".\t", friends[i][3], " ", friends[i][4])
+            print("If you want to disconnect with someone enter their number or enter ", (len(friends) + 1) , " to return")
+            user_in = int(input())
+            if user_in == len(friends)+1:
+                continue
+            removeFriend(username, friends[i][0])
+        elif usr_input == 2:
+            pending_friends = findPendingFriendRequests(username)
+        elif usr_input == 3:
+            print("Returning...")
+            return
+
+        
+
+
+
+"""
+this function takes two usernames and adds them to the table 
+of friends with pending = false
+The friends table is set up as an edge list graph that only
+stores the list of edges that connect users to make a graph.
+it also stores a pending value that is true when 
+"""
 def makeFriends(user_1, user_2):
     if user_1 == user_2:
         return False
@@ -59,12 +140,12 @@ def makeFriends(user_1, user_2):
     cur = conn.cursor()
     #make sure that the two users are not already friends
     cur.execute(
-        f"SELECT * FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}')"
+        f"SELECT * FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}');"
     )
     results = cur.fetchall()
     if len(results) != 0:
         print("You are already friends")
-        return
+        return False
 
     cur.execute(
         f"INSERT INTO friends(user_1, user_2, pending) VALUES('{user_1}', '{user_2}', '{pending}');"
@@ -111,7 +192,7 @@ def universitySearch(username, uni):
     
     print("Are you looking for:")
     for i in range(len(results)):
-        print(i,". ", results[])
+        print(i,". ", results[i][0])
 
 
 

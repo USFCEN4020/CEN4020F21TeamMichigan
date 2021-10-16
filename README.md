@@ -23,3 +23,5 @@ list of all tables in the database with column names:
         username, title, employer, date_started, date_ended, location, description
     education:
         username, school, degree, year_attended
+    friends:
+        user_1, user_2, pending

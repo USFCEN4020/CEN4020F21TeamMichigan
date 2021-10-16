@@ -4,6 +4,7 @@ from find_user import findUser
 from navigation_links import usefulLink, importantLink
 from user_profile import updateProfile, viewProfile
 from db_connection import createTables
+from db_connection import db_conn
 
 # Handles logins
 
@@ -19,8 +20,27 @@ def login():
         print("Please try again")
         login()
 
+#this function executes a querey to see how many pending friend requests
+#a user has 
+#it returns all the rows where the current user is one of the two users and
+#where pending is true
+def findPendingFriendRequests(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM friends WHERE (user_2='{username}') AND (pending = TRUE);"
+    )
+    return cur.fetchall()
 
 def mainMenu(username):
+
+    #checking if they have any friend requests
+    results = findPendingFriendRequests(username)
+    if len(results) > 0:
+        print("You have ", len(results), " new friend requests \nCheck them out in the Show my Network option in the user page!")
+
+
+
     from user_page import userPage
     print('working')
     print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
