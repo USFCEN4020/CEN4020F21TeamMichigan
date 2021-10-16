@@ -84,6 +84,46 @@ def findUserFriends(username):
         return []
     return ret[0]
 
+def displayFriendsProfile(username, first_name, last_name):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+            f"SELECT * FROM profile WHERE username='{username}'"
+        )
+    result = cur.fetchall()
+    print("----------------------------")
+    print("Your Friend ", first_name, " ", last_name)
+    print("----------------------------")
+    print("Title: ", result[0][1])
+    print("Major: ", result[0][2])
+    print("University: ", result[0][3])
+    print("About: ", result[0][4])
+    cur.execute(
+            f"SELECT * FROM education WHERE username='{username}'"
+        )
+    result = cur.fetchall()
+    print("----------------------------")
+    print("Education")
+    print("----------------------------")
+    print("School: ", result[0][1])
+    print("Degree: ", result[0][2])
+    print("Year Graduated: ", result[0][3])
+    cur.execute(
+            f"SELECT * FROM experiences WHERE username='{username}'"
+        )
+    result = cur.fetchall()
+    print("----------------------------")
+    print("Work History")
+    print("----------------------------")
+    for i in range(len(result)):
+        print("Title: ", result[i][1])
+        print("Employer: ", result[i][2])
+        print("Start Date: ", result[i][3])
+        print("End Date: ", result[i][4])
+        print("Location: ", result[i][5])
+        print("Discription: ", result[i][6])
+
+    
 
 #this function deletes the row where the two users exist
 #this effectively removes the friendship or it can also
@@ -117,14 +157,20 @@ def showNetwork(username):
             print("Here is a list of people you have connected with:")
             for i in range(len(friends)):
                 print(i, ".\t", friends[i][2], " ", friends[i][3])
-            
-            print("If you want to disconnect with someone enter their number or enter ", (len(friends) + 1) , " to return")
-            user_in = int(input())
-            if user_in == len(friends)+1:
-                continue
-            removeFriend(username, friends[user_in][0])
-            print("You are no longer friends with ", friends[user_in][2], " ", friends[user_in][3])
+                
 
+            print("If you want to display your friends profile press 1 if you could like to unfriend press 2")
+            user_options = int(input())
+            if user_options == 2:
+                print("If you want to disconnect with someone enter their number or enter ", (len(friends) + 1) , " to return")
+                user_in = int(input())
+                if user_in == len(friends)+1:
+                    continue
+                removeFriend(username, friends[user_in][0])
+                print("You are no longer friends with ", friends[user_in][2], " ", friends[user_in][3])
+            elif user_options == 1:
+                displayFriendsProfile(friends[i][0],friends[i][2],friends[i][3])
+                
         elif usr_input == 2:
             while True:
                 pending_friends = findPendingFriendRequests(username)
