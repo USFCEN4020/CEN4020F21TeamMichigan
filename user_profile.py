@@ -6,7 +6,7 @@ def updateTitle(username, title):
         conn = db_conn()
         # Open a cursor to perform database operations
         cur = conn.cursor()
-    
+
         cur.execute(
             f"UPDATE profile SET title = '{title}' WHERE username ='{username}';")
         conn.commit()
@@ -71,14 +71,12 @@ def updateExp(username):
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-
     print("Enter 1 if you would like to add a work experience or 2 if you would like to edit a work experience")
     option = input()
 
     cur.execute(
         f"SELECT title FROM experiences WHERE username ='{username}';")
     jobCount = cur.fetchall()
-
 
     if len(jobCount) < 4:
         print("You can only add up to 3 jobs")
@@ -90,15 +88,15 @@ def updateExp(username):
         cur.execute("SELECT * FROM experiences")
         table = cur.fetchall()
         for row in table:
-            print (row)
+            print(row)
             print("\n")
         print("Please enter the title you would like to edit")
         titleInput = input()
 
-
     print("Please enter your employer's name")
     employer = input()
-    employer = ' '.join(word[0].upper() + word[1:] for word in employer.split())
+    employer = ' '.join(word[0].upper() + word[1:]
+                        for word in employer.split())
     if option == '2':
         cur.execute(
             f"UPDATE experiences SET employer = '{employer}' WHERE title ='{titleInput}';")
@@ -111,16 +109,17 @@ def updateExp(username):
             f"UPDATE experiences SET date_started = '{start_date}' WHERE title ='{titleInput}';")
         conn.commit()
 
-    print ("Please enter your ending date (mm/dd/yy)")
+    print("Please enter your ending date (mm/dd/yy)")
     end_date = input()
     if option == '2':
         cur.execute(
             f"UPDATE experiences SET date_ended = '{end_date}' WHERE title ='{titleInput}';")
         conn.commit()
-    
+
     print("Please enter the location of this job")
     location = input()
-    location =' '.join(word[0].upper() + word[1:] for word in location.split())
+    location = ' '.join(word[0].upper() + word[1:]
+                        for word in location.split())
     if option == '2':
         cur.execute(
             f"UPDATE experiences SET location = '{location}' WHERE title ='{titleInput}';")
@@ -152,14 +151,14 @@ def updateExp(username):
 
 def updateEdu(username):
 
-    return 1
     conn = db_conn()
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
     print("Please enter the Univeristy you attended")
     university = input()
-    university = ' '.join(word[0].upper() + word[1:] for word in university.split())
+    university = ' '.join(word[0].upper() + word[1:]
+                          for word in university.split())
     cur.execute(
         f"UPDATE education SET school = '{university}' WHERE username ='{username}';")
     conn.commit()
@@ -177,9 +176,7 @@ def updateEdu(username):
         f"UPDATE education SET year_attended = '{year}' WHERE username ='{username}';")
     conn.commit()
 
-
     print("Update successfully!")
-    return 1
 
 
 def updateProfile(username):
@@ -299,7 +296,7 @@ def viewProfile(username):
     # get school info
     cur.execute(
         f"SELECT school FROM education WHERE username ='{username}';")
-    school= cur.fetchone()
+    school = cur.fetchone()
     conn.commit()
 
     # get description info
@@ -331,7 +328,7 @@ def viewProfile(username):
     if len(uni) > 0:
         print("University: ", end="")
         print(uni[0])
-        
+
     if len(about) > 0:
         print("About: ", end="")
         print(about[0])
@@ -372,11 +369,5 @@ def viewProfile(username):
 
     print("Year Graduated: ", end="")
     print(year_attended[0])
-    
+
     return 1
-
-        
-
-
-
-
