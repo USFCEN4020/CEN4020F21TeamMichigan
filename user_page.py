@@ -56,6 +56,9 @@ def userPage(username):
 #this function finds all the current friends that the user has and returns them
 #as a tuple of tuples of the rows that matched the query
 #i.e. ((user_1 value, user_2 value, pending value),(user_1 value, user_2 value, pending value), ...)
+
+
+
 #returns a list of tuples that contain a row from auth the the user is friends with
 def findUserFriends(username):
     conn = db_conn()
@@ -77,8 +80,9 @@ def findUserFriends(username):
             f"SELECT * FROM auth WHERE username='{friends[i]}'"
         )
         ret.append(cur.fetchall())
-
-    return ret
+    if len(ret) == 0:
+        return []
+    return ret[0]
 
 
 #this function deletes the row where the two users exist
@@ -87,11 +91,14 @@ def findUserFriends(username):
 def removeFriend(user_1, user_2):
     conn = db_conn()
     cur = conn.cursor()
-    cur.execute(
-        f"DELETE * FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}');"
-    )
+    cur.execute(f"DELETE FROM friends WHERE (user_1 = '{user_1}' AND user_2 = '{user_2}') OR (user_1 = '{user_2}' AND user_2 = '{user_1}');")
+    conn.commit()
 
 def showNetwork(username):
+
+    conn = db_conn()
+    cur = conn.cursor()
+
     while True:
         print("----------------------------")
         pending_friends = findPendingFriendRequests(username)
@@ -99,7 +106,7 @@ def showNetwork(username):
             print("You have ", len(pending_friends), " pending friend requests")
         print("1.   View my Current Network")
         print("2.   View my Pending Friend Requests")
-        print("#.   Go Back")
+        print("3.   Go Back")
 
         usr_input = int(input())
         if usr_input == 1:
@@ -107,40 +114,50 @@ def showNetwork(username):
             if len(friends) == 0:
                 print("You have no friends")
                 continue
-            print("Here is a list of people you have connected with")
+            print("Here is a list of people you have connected with:")
             for i in range(len(friends)):
-                print(i, ".\t", friends[i][3], " ", friends[i][4])
+                print(i, ".\t", friends[i][2], " ", friends[i][3])
+            
             print("If you want to disconnect with someone enter their number or enter ", (len(friends) + 1) , " to return")
             user_in = int(input())
             if user_in == len(friends)+1:
                 continue
-            removeFriend(username, friends[i][0])
+            removeFriend(username, friends[user_in][0])
+            print("You are no longer friends with ", friends[user_in][2], " ", friends[user_in][3])
 
         elif usr_input == 2:
             while True:
                 pending_friends = findPendingFriendRequests(username)
+                #print("Pending friends: ", pending_friends)
+                if len(pending_friends) == 0:
+                    print("You have no friend requests")
+                    break
                 pen_friends = []
                 for i in range(len(pending_friends)):
-                    if results[i][0] != username:
-                        pen_friends.append(results[i][0])
+                    if pending_friends[i][0] != username:
+                        pen_friends.append(pending_friends[i][0])
                     elif results[i][1] != username:
-                        pen_friends.append(results[i][1])
+                        pen_friends.append(pending_friends[i][1])
             
                 ret = []
                 for i in range(len(pen_friends)):
                     cur.execute(
                         f"SELECT * FROM auth WHERE username='{pen_friends[i]}'"
                     )
-                    ret.append(cur.fetchall())
+                    ret.append(cur.fetchone())
                 print("---------------------------------")
                 print("Pending Friends:")
+
                 for i in range(len(ret)):
-                    print(i, ".\t", ret[i][3], " ", ret[i][4])
-                print("Select one to accept or reject")
+                    print(i, ".\t", ret[i][2], " ", ret[i][3])
+                print("Select one to accept or reject or press 3 to return")
                 usr_in = int(input())
+                if usr_in == 3:
+                    break
                 print("Would you like to:\n1.\taccept\n2.\treject\n3.\tignore \nthis friend request?")
                 u_in = int(input())
                 if u_in == 1:
+                    confirmFriend(username,ret[usr_in][0])
                     print("You are now friends")
                 elif u_in == 2:
                     removeFriend(username, ret[usr_in][0])
@@ -155,7 +172,14 @@ def showNetwork(username):
             return
 
         
-
+def confirmFriend(user_2, user_1):
+    removeFriend(user_1, user_2)
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"INSERT INTO friends(user_1, user_2, pending)  VALUES('{user_1}','{user_2}',FALSE);"
+    )
+    conn.commit()
 
 
 """
@@ -178,11 +202,11 @@ def makeFriends(user_1, user_2):
     results = cur.fetchall()
     if len(results) != 0:
         print("You are already friends")
-        return False
+        return True
 
-    cur.execute(
-        f"INSERT INTO friends(user_1, user_2, pending) VALUES('{user_1}', '{user_2}', '{pending}');"
-    )
+    new_friend = f"INSERT INTO friends(user_1, user_2, pending) VALUES('{user_1}', '{user_2}', '{pending}');"
+    cur.execute(new_friend, (user_1, user_2, pending))
+    conn.commit()
     return True
 
 
@@ -203,10 +227,9 @@ def lastNameSearch(user,lastname):
     for i in range(len(results)):
         print(i, ". ", results[i][2], " ", results[i][3])
     if len(results) == 1:
-        usr = input("Enter 1 to confirm friend request:\t")
-        usr = usr - 1
+        usr = int(input("Enter 0 to confirm friend request:\t"))
     else:
-        usr = input("Please select which specific person you are refering to:\t")    
+        usr = int(input("Please select which specific person you are refering to:\t") )
 
     if makeFriends(user, results[usr][0]):
         print("Friend request pending")
@@ -216,7 +239,7 @@ def universitySearch(username, uni):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM profile WHERE university = '{uni}' AND NOT username = '{user}';"
+        f"SELECT * FROM profile WHERE university = '{uni}' AND NOT username = '{username}';"
     )
     results = cur.fetchall()
     if len(results) == 0:
@@ -250,12 +273,12 @@ def majorSearch(username, major):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM profile WHERE major = '{major}' AND NOT username = '{user}';"
+        f"SELECT * FROM profile WHERE major = '{major}' AND NOT username = '{username}';"
     )
     results = cur.fetchall()
     if len(results) == 0:
         print("There are no users that have this major")
-        return false
+        return False
     
     same_major = []
     for i in range(len(results)):
@@ -294,11 +317,11 @@ def findSomeonePage(username):
                 continue
             
         elif search_method == 2:
-            uni = input("Please enter a Univeristy")
+            uni = input("Please enter a Univeristy:\t")
             universitySearch(username, uni)
 
         elif search_method == 3:
-            major = input("Please enter a Major")
+            major = input("Please enter a Major:\t")
             majorSearch(username, major)
 
         elif search_method == 4:

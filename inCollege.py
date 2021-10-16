@@ -40,25 +40,25 @@ def mainMenu(username):
         print("You have ", len(results), " new friend requests \nCheck them out in the Show my Network option in the user page!")
 
 
-
-    from user_page import userPage
-    print('working')
-    print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
-    option = int(input())
-    while not (option > 0 and option < 6):
-        print("Invalid option")
-        option = input()
-    if (option == 1):
-        usefulLink()
-    elif (option == 2):
-        print(username)
-        importantLink(username)
-    elif (option == 3):
-        updateProfile(username)
-    elif (option == 4):
-        viewProfile(username)
-    else:
-        userPage(username)
+    while True:
+        from user_page import userPage
+        print('working')
+        print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
+        option = int(input())
+        while not (option > 0 and option < 6):
+            print("Invalid option")
+            option = input()
+        if (option == 1):
+            usefulLink()
+        elif (option == 2):
+            print(username)
+            importantLink(username)
+        elif (option == 3):
+            updateProfile(username)
+        elif (option == 4):
+            viewProfile(username)
+        else:
+            userPage(username)
 
 
 # handles signups
