@@ -115,8 +115,41 @@ def showNetwork(username):
             if user_in == len(friends)+1:
                 continue
             removeFriend(username, friends[i][0])
+
         elif usr_input == 2:
-            pending_friends = findPendingFriendRequests(username)
+            while True:
+                pending_friends = findPendingFriendRequests(username)
+                pen_friends = []
+                for i in range(len(pending_friends)):
+                    if results[i][0] != username:
+                        pen_friends.append(results[i][0])
+                    elif results[i][1] != username:
+                        pen_friends.append(results[i][1])
+            
+                ret = []
+                for i in range(len(pen_friends)):
+                    cur.execute(
+                        f"SELECT * FROM auth WHERE username='{pen_friends[i]}'"
+                    )
+                    ret.append(cur.fetchall())
+                print("---------------------------------")
+                print("Pending Friends:")
+                for i in range(len(ret)):
+                    print(i, ".\t", ret[i][3], " ", ret[i][4])
+                print("Select one to accept or reject")
+                usr_in = int(input())
+                print("Would you like to:\n1.\taccept\n2.\treject\n3.\tignore \nthis friend request?")
+                u_in = int(input())
+                if u_in == 1:
+                    print("You are now friends")
+                elif u_in == 2:
+                    removeFriend(username, ret[usr_in][0])
+                    print("Friend request rejected")
+                elif u_in == 3:
+                    continue
+            
+
+
         elif usr_input == 3:
             print("Returning...")
             return
@@ -190,11 +223,59 @@ def universitySearch(username, uni):
         print("There are no users that go to this school")
         return
     
-    print("Are you looking for:")
+    same_school = []
     for i in range(len(results)):
-        print(i,". ", results[i][0])
+        if results[i][0] != username:
+            same_school.append(results[i][0])
+
+        
+    ret = []
+    for i in range(len(same_school)):
+        cur.execute(
+            f"SELECT * FROM auth WHERE username='{same_school[i]}'"
+        )
+        ret.append(cur.fetchall())
 
 
+    print("Are you looking for:")
+    for i in range(len(ret)):
+        print(i,". ", ret[i][0])
+    u_in = int(input())
+    makeFriends(username, ret[u_in][0])
+
+
+
+
+def majorSearch(username, major):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM profile WHERE major = '{major}' AND NOT username = '{user}';"
+    )
+    results = cur.fetchall()
+    if len(results) == 0:
+        print("There are no users that have this major")
+        return false
+    
+    same_major = []
+    for i in range(len(results)):
+        if results[i][0] != username:
+            same_major.append(results[i][0])
+
+        
+    ret = []
+    for i in range(len(same_major)):
+        cur.execute(
+            f"SELECT * FROM auth WHERE username='{same_major[i]}'"
+        )
+        ret.append(cur.fetchall())
+
+
+    print("Are you looking for:")
+    for i in range(len(ret)):
+        print(i,". ", ret[i][0])
+    u_in = int(input())
+    makeFriends(username, ret[u_in][0])
 
 
 
