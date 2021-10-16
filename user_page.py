@@ -36,7 +36,7 @@ def userPage(userName):
         usr_input = int(input("Please enter your selection:\t"))
 
         if usr_input == 1:
-            findSomeonePage()
+            findSomeonePage(userName)
         elif usr_input == 2:
             learnSkillPage(userName)
         elif usr_input == 3:
@@ -69,9 +69,10 @@ def makeFriends(user_1, user_2):
     cur.execute(
         f"INSERT INTO friends(user_1, user_2, pending) VALUES('{user_1}', '{user_2}', '{pending}');"
     )
+    return True
 
 
-#searches the database for 
+#searches the database for the username of a user with a certain last name
 def lastNameSearch(user,lastname):
     conn = db_conn()
     cur = conn.cursor()
@@ -81,15 +82,37 @@ def lastNameSearch(user,lastname):
     results = cur.fetchall()
     if len(results) == 0:
         print("There are no users with this last name")
-        return NULL
+        return True
 
+    #if there are multiple users with the same last name then they will all be listed
+    print("Are you looking for:")
     for i in range(len(results)):
-        print(results[i])
-    
-    if makeFriends(user, results[0]):
+        print(i, ". ", results[i][2], " ", results[i][3])
+    if len(results) == 1:
+        usr = input("Enter 1 to confirm friend request:\t")
+        usr = usr - 1
+    else:
+        usr = input("Please select which specific person you are refering to:\t")    
+
+    if makeFriends(user, results[usr][0]):
         print("Friend request pending")
     
+#searches for people who go to the same university
+def universitySearch(username, uni):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM profile WHERE university = '{uni}' AND NOT username = '{user}';"
+    )
+    results = cur.fetchall()
+    if len(results) == 0:
+        print("There are no users that go to this school")
+        return
     
+    print("Are you looking for:")
+    for i in range(len(results)):
+        print(i,". ", results[])
+
 
 
 
@@ -97,23 +120,24 @@ def lastNameSearch(user,lastname):
 #this funciton prompts the user to enter a search method and 
 def findSomeonePage(username):
     while True:
+        print("------------------------------------")
         print("Find someone by searching by:\n1.\tLast Name\n2.\tUniversity\n3.\tMajor\n4.\tGo Back")
         search_method = int(input())
 
         if search_method == 1:
-            lastname = input("Please enter a last name")
+            lastname = input("Please enter a last name:\t")
             usrname = lastNameSearch(username, lastname)
-            if usrname == NULL:
+            if usrname:
                 print("Please try again\n")
                 continue
             
         elif search_method == 2:
             uni = input("Please enter a Univeristy")
-            universitySearch()
+            universitySearch(username, uni)
 
         elif search_method == 3:
             major = input("Please enter a Major")
-            majorSearch()
+            majorSearch(username, major)
 
         elif search_method == 4:
             return
