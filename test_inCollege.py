@@ -234,7 +234,7 @@ def test_makeFriends(username, expected):
 
 @pytest.mark.parametrize('username, last, expected',
                          [
-                             ('defultUser', 'Doe', True),
+
                              ('nhi123', 'Ng', True),
                              ('Kenvin23', 'K.', True)
                          ])
