@@ -205,17 +205,6 @@ def test_findUserFriends(username, expected):
 def test_removeFriends(username, expected):
     assert removeFriend(username, username) == expected
 
-
-@pytest.mark.parametrize('username, expected',
-                         [
-                             ('defultUser', []),
-                             ('nhi123', []),
-                             ('kevin56', [])
-                         ])
-def test_findPendingFriendRequests(username, expected):
-    assert findPendingFriendRequests(username) == expected
-
-
 @pytest.mark.parametrize('username, expected',
                          [
                              ('defultUser', 1)
@@ -226,21 +215,30 @@ def test_confirmFriend(username, expected):
 
 @pytest.mark.parametrize('username, expected',
                          [
-                             ('defultUser', False)
+                             ('notDefultUser', False)
                          ])
 def test_makeFriends(username, expected):
     assert makeFriends(username, username) == expected
-
+    
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', []),
+                             ('nhi123', []),
+                             ('kevin56', [])
+                         ])
+def test_findPendingFriendRequests(username, expected):
+    assert findPendingFriendRequests(username) == expected
 
 @pytest.mark.parametrize('username, last, expected',
                          [
-
+                             ('notDefultUser', 'Doe', False),
                              ('nhi123', 'Ng', True),
                              ('Kenvin23', 'K.', True)
                          ])
 def test_lastNameSearch(username, last, expected):
+    if(expected == False):
+        sys.stdin = io.StringIO('0')
     assert lastNameSearch(username, last) == expected
-
 
 @pytest.mark.parametrize('username, school, expected',
                          [
@@ -249,9 +247,9 @@ def test_lastNameSearch(username, last, expected):
                              ('kevin12', 'UT', False)
                          ])
 def test_universitySearch(username, school, expected):
-    assert universitySearch(
-        username, school) == expected
-
+    if(expected == True):
+        sys.stdin = io.StringIO('0')
+    assert universitySearch(username, school) == expected
 
 @pytest.mark.parametrize('username, major, expected',
                          [

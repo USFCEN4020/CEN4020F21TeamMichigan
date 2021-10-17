@@ -272,7 +272,7 @@ def lastNameSearch(user, lastname):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM auth WHERE last_name = '{lastname}' AND username = '{user}';"
+        f"SELECT * FROM auth WHERE last_name = '{lastname}' AND NOT username = '{user}';"
     )
     results = cur.fetchall()
     if len(results) == 0:
@@ -291,6 +291,8 @@ def lastNameSearch(user, lastname):
 
     if makeFriends(user, results[usr][0]):
         print("Friend request pending")
+        
+    return False
 
 # searches for people who go to the same university
 

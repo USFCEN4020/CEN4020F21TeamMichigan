@@ -103,7 +103,7 @@ def addDefaultUser():
     last = "Doe"
     title = "Mr."
     major = "Computer Science"
-    university = "University of South Florida"
+    university = "USF"
     about = "Lorem ipus"
 
     conn = db_conn()
