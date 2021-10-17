@@ -191,7 +191,7 @@ def showNetwork(username):
                 for i in range(len(pending_friends)):
                     if pending_friends[i][0] != username:
                         pen_friends.append(pending_friends[i][0])
-                    elif results[i][1] != username:
+                    elif pending_friends[i][1] != username:
                         pen_friends.append(pending_friends[i][1])
 
                 ret = []
@@ -278,8 +278,6 @@ def lastNameSearch(user, lastname):
     if len(results) == 0:
         print("There are no users with this last name")
         return True
-    else:
-        return False
 
     # if there are multiple users with the same last name then they will all be listed
     print("Are you looking for:")
