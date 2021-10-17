@@ -272,7 +272,7 @@ def lastNameSearch(user, lastname):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM auth WHERE last_name = '{lastname}' AND NOT username = '{user}';"
+        f"SELECT * FROM auth WHERE last_name = '{lastname}' AND username = '{user}';"
     )
     results = cur.fetchall()
     if len(results) == 0:
