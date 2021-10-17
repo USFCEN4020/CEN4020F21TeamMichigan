@@ -1,14 +1,98 @@
 import pytest
+from inCollege import findPendingFriendRequests
+from tud_test_base import set_keyboard_input, get_display_output
+from navigation_links import general
 from authorization import isAuthorized
 from find_user import findUser
 from user_profile import updateTitle, updateMajor, updateUniName, updateAbout, viewProfile, updateExp, updateEdu, updateProfile
-from add_user import addDefaultUser
+from add_user import addDefaultUser, validatePassword, canAdd
+from user_page import confirmFriend, displayFriendsProfile, findUserFriends, makeFriends, removeFriend, lastNameSearch, universitySearch, majorSearch
 import io
 import sys
 import app
 
 
 # should be able to run with py.test in terminal, add -v to see
+
+
+gen_output = ["Type your option to view: ",
+              "1. Sign up",
+              "2. Help Center",
+              "3. About",
+              "4. Press",
+              "5. Blog",
+              "6. Careers",
+              "7. Developers",
+              "8. Go back", ]
+
+
+##########################################################################################
+
+
+# check if isAuthorize correctly detects account already exists in the database
+# for accounts that return 1, change the username and password into what you have in your database
+@pytest.mark.parametrize('username, password, result',
+                         # return 0 if account doesnt exist
+                         [
+                             ('anessa23', 'An23@abc1', 0),
+                             ('jim2301', 'Jim@2a53f', 0),
+                             ('panther902', 'P4na3.def', 0),
+                             ('kelly324', 'kElly34.xyz', 0)
+
+                         ]
+
+                         )
+def test_isAuthorized(username, password, result):
+    assert isAuthorized(username, password) == result
+
+
+@pytest.mark.parametrize('first, last, result',
+                         # return 0 if user is not found
+                         [
+                             ('anessa23', 'An23@abc1', 0),
+                             ('jim2301', 'Jim@2a53f', 0),
+                             ('panther902', 'P4na3.def', 0),
+                             ('kelly324', 'kElly34.xyz', 0)
+
+                         ]
+                         )
+def test_find_user(first, last, result):
+    assert findUser(first, last) == result
+
+
+# this function checks if the password is valid
+@pytest.mark.parametrize('password, result',
+                         [
+                             # invalid passwords
+                             ('1232', 0),
+                             ('2_Shor!', 0),
+                             ('abcdefg8!', 0),
+                             ('TooLong_Pa55word', 0),
+                             ('missingcap1!', 0),
+                             ('NononAlph5', 0),
+                             # valid passwords
+                             ('Mark@1234', 1),
+                             ('aneSsa.9', 1),
+                             ('h0uS2@jd', 1),
+
+                         ]
+                         )
+def test_validatePassword(password, result):
+    assert validatePassword(password) == result
+
+
+# this function checks if user can sign up based on the number of accounts in the database
+def test_canAdd():
+    # if the number of accounts is less than 5, return true
+    assert(canAdd([(1, )]) == 1)
+    assert(canAdd([(2, )]) == 1)
+    assert(canAdd([(4, )]) == 1)
+    assert(canAdd([(-1, )]) == 1)
+    assert(canAdd([(0, )]) == 1)
+
+    # if the number of accounts is more than 10, return false
+    assert(canAdd([(11, )]) == 0)
+
 
 """
     Test the function updateTitle, will return a 1 if everything goes well and 0 otherwise. This function
@@ -96,4 +180,84 @@ def test_updateExp():
     assert updateExp('defultUser') == 1
 
 
-########################################################## EPIC 5 ##############################################################
+########################################################## WEEK 5 ##############################################################
+@pytest.mark.parametrize('username, first, last, expected',
+                         [
+                             ('defultUser', 'John', 'Doe', 1)
+                         ])
+def test_displayFriendsProfile(username, first, last, expected):
+    assert displayFriendsProfile(username, first, last) == expected
+
+
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', []),
+                             ('nhi123', [])
+                         ])
+def test_findUserFriends(username, expected):
+    assert findUserFriends(username) == expected
+
+
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', 1)
+                         ])
+def test_removeFriends(username, expected):
+    assert removeFriend(username, username) == expected
+
+
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', []),
+                             ('nhi123', []),
+                             ('kevin56', [])
+                         ])
+def test_findPendingFriendRequests(username, expected):
+    assert findPendingFriendRequests(username) == expected
+
+
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', 1)
+                         ])
+def test_confirmFriend(username, expected):
+    assert confirmFriend(username, username) == expected
+
+
+@pytest.mark.parametrize('username, expected',
+                         [
+                             ('defultUser', False)
+                         ])
+def test_makeFriends(username, expected):
+    assert makeFriends(username, username) == expected
+
+
+@pytest.mark.parametrize('username, last, expected',
+                         [
+                             ('defultUser', 'Doe', False),
+                             ('nhi123', 'Ng', True),
+                             ('Kenvin23', 'K.', True)
+                         ])
+def test_lastNameSearch(username, last, expected):
+    assert lastNameSearch(username, last) == expected
+
+
+@pytest.mark.parametrize('username, school, expected',
+                         [
+                             ('defultUser', 'USF', False),
+                             ('nhi123', 'UF', False),
+                             ('kevin12', 'UT', False)
+                         ])
+def test_universitySearch(username, school, expected):
+    assert universitySearch(
+        username, school) == expected
+
+
+@pytest.mark.parametrize('username, major, expected',
+                         [
+                             ('defultUser', 'Biomed', False),
+                             ('nhi234', 'Comp Sci', False),
+                             ('kevin123', 'Marketing', False)
+                         ])
+def test_majorSearch(username, major, expected):
+    assert majorSearch(username, major) == expected

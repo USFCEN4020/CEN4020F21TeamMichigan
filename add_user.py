@@ -43,13 +43,13 @@ def validatePassword(password):
 # Adds user to the database
 
 
-#this function checks if a username exists or not
-#if it exists then it returns true, otherwise false
+# this function checks if a username exists or not
+# if it exists then it returns true, otherwise false
 def isUsernameTaken(username):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-            f"SELECT * FROM auth WHERE username='{username}';"
+        f"SELECT * FROM auth WHERE username='{username}';"
     )
     if cur.fetchone() is None:
         return False
@@ -66,17 +66,16 @@ def addUser():
             print("This username is already taken")
         else:
             break
-        
+
     # finds out if password is allowed
     while True:
         password = input("Enter a password: ")
         if validatePassword(password) == 1:
             break
         print("Please enter a valid password\nA valid password contains 8-12 characters, a capital letter, a digit, and a non-alpha character.")
-        
+
     first = input("First Name: ")
     last = input("Last Name: ")
-
 
     # insert user info
     auth = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
@@ -84,7 +83,6 @@ def addUser():
     profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
-    
 
     cur.execute(auth, (username, password, first, last))
     cur.execute(control, (username, 1, 1, 1, 'English'))
@@ -96,7 +94,6 @@ def addUser():
     conn.commit()
     return 1
 
-        
 
 # Defult user for testing purposes. This is not used for any other context.
 def addDefaultUser():
@@ -124,7 +121,7 @@ def addDefaultUser():
     cur.execute(control, (username, 1, 1, 1, 'English'))
     cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
     cur.execute(experiences, (username, 'NULL', 'NULL',
-                    'NULL', 'NULL', 'NULL', 'NULL'))
+                              'NULL', 'NULL', 'NULL', 'NULL'))
     cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
 
     conn.commit()
