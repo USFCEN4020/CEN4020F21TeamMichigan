@@ -187,6 +187,7 @@ def listAppliedJobs(username):
     results = cur.fetchall()
     for i in range(len(results)):
         print(i,". ", results[i][1])
+    return 1
 
 def listNotAppliedJobs(username):
     print("Here are the jobs you have not applied for")
@@ -196,6 +197,7 @@ def listNotAppliedJobs(username):
     results = cur.fetchall()
     for i in range(len(results)):
         print(i,". ", results[i][1])
+    return 1
 
 def saveJob(username):
     title = input("Please enter the title of the job you would like to save")
@@ -204,9 +206,8 @@ def saveJob(username):
     query = f"INSERT INTO applications (title, name, grad_date, start_date, reason, pending) VALUES ('{title}', '{username}', ' ', ' ', ' ', TRUE);"
     cur.execute(query, (title, username, " ", " ", " "))
     conn.commit()
+    return 1
 
-def applyToSavedJob(username):
-    print()
 
 
 def listSavedJobs(username):
@@ -226,6 +227,7 @@ def listSavedJobs(username):
         cur.execute(f"DROP * FROM applications WHERE id = '{username} AND pending = TRUE AND title = '{title}'")
         conn.commit()
         print("Saved job removed")
+        return 1
 
 
 ################End of Challenge 6################
