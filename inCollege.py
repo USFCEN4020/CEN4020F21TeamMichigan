@@ -89,8 +89,7 @@ def main():
     elif choice == "3":
         print("My Story:")
         print("I had a low GPA and no experience while in college. My LinkedIn profile was blank because I hadn't done anything yet. That was until I found inCollege!")
-        print(
-            "Now I have a job and can start paying by my student loans. Thanks inCollege!")
+        print("Now I have a job and can start paying back my student loans. Thanks inCollege!")
         print("To see my story type 'video'")
         print("Connect with others type 'connect'")
         print("Please type 'login' to log in to your account")
