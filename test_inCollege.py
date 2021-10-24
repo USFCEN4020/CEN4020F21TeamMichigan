@@ -205,6 +205,7 @@ def test_findUserFriends(username, expected):
 def test_removeFriends(username, expected):
     assert removeFriend(username, username) == expected
 
+
 @pytest.mark.parametrize('username, expected',
                          [
                              ('defultUser', 1)
@@ -219,15 +220,7 @@ def test_confirmFriend(username, expected):
                          ])
 def test_makeFriends(username, expected):
     assert makeFriends(username, username) == expected
-    
-@pytest.mark.parametrize('username, expected',
-                         [
-                             ('defultUser', []),
-                             ('nhi123', []),
-                             ('kevin56', [])
-                         ])
-def test_findPendingFriendRequests(username, expected):
-    assert findPendingFriendRequests(username) == expected
+
 
 @pytest.mark.parametrize('username, last, expected',
                          [
@@ -240,6 +233,7 @@ def test_lastNameSearch(username, last, expected):
         sys.stdin = io.StringIO('0')
     assert lastNameSearch(username, last) == expected
 
+
 @pytest.mark.parametrize('username, school, expected',
                          [
                              ('defultUser', 'USF', False),
@@ -250,6 +244,7 @@ def test_universitySearch(username, school, expected):
     if(expected == True):
         sys.stdin = io.StringIO('0')
     assert universitySearch(username, school) == expected
+
 
 @pytest.mark.parametrize('username, major, expected',
                          [
