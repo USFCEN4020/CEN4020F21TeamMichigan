@@ -1,12 +1,13 @@
 import pytest
 from inCollege import findPendingFriendRequests
-from tud_test_base import set_keyboard_input, get_display_output
+from tud_test_base import set_keyboard_input, get_display_output, mock_input, mock_input_output_end, mock_input_output_start, set_input
 from navigation_links import general
 from authorization import isAuthorized
 from find_user import findUser
 from user_profile import updateTitle, updateMajor, updateUniName, updateAbout, viewProfile, updateExp, updateEdu, updateProfile
 from add_user import addDefaultUser, validatePassword, canAdd
 from user_page import confirmFriend, displayFriendsProfile, findUserFriends, makeFriends, removeFriend, lastNameSearch, universitySearch, majorSearch
+from intership_page import applyJob, deleteJob, jobSearch, listAppliedJobs, postJob, listNotAppliedJobs, saveJob
 import io
 import sys
 import app
@@ -254,3 +255,48 @@ def test_universitySearch(username, school, expected):
                          ])
 def test_majorSearch(username, major, expected):
     assert majorSearch(username, major) == expected
+
+################### EPIC 6##########################
+
+
+def test_listAppliedJobs():
+    assert listAppliedJobs('defultUser') == 1
+
+
+def test_listNotAppliedJobs():
+    assert listNotAppliedJobs('defultUser') == 1
+
+
+# def test_postJob():
+#     mock_input_output_start()
+#     set_input(['a', 'a', 'a', 'a', 1])
+#     postJob('defultUser')
+#     assert postJob('defultUser') == 1
+
+
+def test_jobSearch():
+    mock_input_output_start()
+    set_input(['5'])
+    assert jobSearch('defultUser') == 1
+    mock_input_output_end()
+
+
+def test_deleteJob():
+    mock_input_output_start()
+    set_input(['a'])
+    assert deleteJob('defultUser') == 0
+    mock_input_output_end()
+
+
+def test_applyJob():
+    mock_input_output_start()
+    set_input(['a', 'a', 'a', 'a'])
+    assert applyJob('defultUser') == 0
+    mock_input_output_end()
+
+
+# def test_saveJob():
+#     mock_input_output_start
+#     set_input(['title'])
+#     assert saveJob('defultUser') == 1
+#     mock_input_output_end
