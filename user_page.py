@@ -32,6 +32,7 @@ def userPage(username):
         print("4.   job Search")
         print("5.   Go Back")
         print("6.   Show my Network")
+        print("7.   Message")
         print("-----------------------------------------")
 
         usr_input = int(input("Please enter your selection:\t"))
@@ -48,6 +49,8 @@ def userPage(username):
             return
         elif usr_input == 6:
             showNetwork(username)
+        elif usr_input == 7:
+            messageFriend(username)
         else:
             print("\nPlease enter a valid input\n")
             userPage()
@@ -213,6 +216,7 @@ def showNetwork(username):
                     "Would you like to:\n1.\taccept\n2.\treject\n3.\tignore \nthis friend request?")
                 u_in = int(input())
                 if u_in == 1:
+                    print(ret)
                     confirmFriend(username, ret[usr_in][0])
                     print("You are now friends")
                 elif u_in == 2:
@@ -423,3 +427,97 @@ def learnSkillPage(userName):
     else:
         print("Please enter a valid input")
         learnSkillPage()
+
+
+def messageFriend(username):
+    print("-----------------------------------------")
+    print("Please select one of the following options: ")
+    print("1.   Send a message")
+    print("2.   Check inbox")
+    print("3.   Go back")
+    print("-----------------------------------------")
+    
+    usr_input = int(input("Please enter your selection:\t"))
+    if(usr_input == 1):
+        sendMessage(username)
+        messageFriend(username)
+    elif(usr_input == 2):
+        checkInbox(username)
+        messageFriend(username)
+    else:
+        userPage(username)
+
+def sendMessage(username):
+    conn = db_conn()
+    cur = conn.cursor()
+
+    friendname = input("Please enter the recipients username:\t")
+
+
+    cur.execute(f"SELECT * FROM friends WHERE user_1 = '{friendname}' AND user_2 = '{username}' AND pending = FALSE;")
+    results = cur.fetchall()
+    lr = 0
+    if(len(results) == 0):
+        lr = 1
+        cur.execute(f"SELECT * FROM friends WHERE user_1 = '{username}' AND user_2 = '{friendname}' AND pending = FALSE;")
+        results = cur.fetchall()
+    
+    if(len(results) == 0):
+        print("I'm sorry, you are not friends with that person")
+        print("Here is a list of your inCollege friends: ")
+        cur.execute(f"SELECT * FROM friends WHERE user_1 = '{username}' OR user_2 = '{username}' AND pending = FALSE;")
+        results = cur.fetchall()
+        for i in range(len(results)):
+            if(results[i][0] == username):
+                print(results[i][2])
+            else:
+                print(results[i][1])
+
+        messageFriend(username)
+    else:
+        if(lr == 0):
+            message = input("Please enter your message:\t")
+
+            cur.execute(f"INSERT INTO messages(user_1, user_2, message)  VALUES('{friendname}','{username}','{message}');")
+            conn.commit()
+            print("Message Sent!")
+            messageFriend(username)
+    messageFriend(username)
+
+
+def findReceivedMessages(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM messages WHERE user_1='{username}';")
+    return cur.fetchall()
+
+
+def checkInbox(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    print("----------------------------")
+    messages = findReceivedMessages(username)
+    print("You have ", len(messages), " messages")
+    if(len(messages) == 0):
+        messageFriend(username)
+    else:
+        print("1.   View my Messages")
+        print("2.   Go Back")
+
+    usr_input = int(input())
+    if usr_input == 1:
+        for i in range(len(messages)):
+            print("----------------")
+            print("Message " + str(i) + "From\t" + messages[i][2] + ":")
+            print(messages[i][3])
+            print("----------------")
+        user_in = int(input("Select one of the following:\n 1.\trespond\n2.\tdelete message\n3.\tgo back\n"))
+        if(user_in == 1):
+            sendMessage(username)
+        elif(user_in == 2):
+            messageNum = int(input("Please enter the message number you wish to delete:\t"))
+            identifier = messages[messageNum][3]
+            cur.execute(
+                f"DELETE FROM messages WHERE user_1 = '{username}' AND message = '{identifier}';")
+            conn.commit()
+    messageFriend(username)

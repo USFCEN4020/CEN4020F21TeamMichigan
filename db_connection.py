@@ -13,7 +13,8 @@ def createTables():
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute(f"CREATE TABLE IF NOT EXISTS auth(username VARCHAR(50) PRIMARY KEY, password VARCHAR(50) NOT NULL, first_name VARCHAR(50) NOT NULL, last_name VARCHAR(50) NOT NULL);")
+    # Challenge 7 added plan to auth table
+    cur.execute(f"CREATE TABLE IF NOT EXISTS auth(username VARCHAR(50) PRIMARY KEY, password VARCHAR(50) NOT NULL, first_name VARCHAR(50) NOT NULL, last_name VARCHAR(50) NOT NULL, plan VARCHAR(50) NOT NULL);") 
     cur.execute(f"CREATE TABLE IF NOT EXISTS jobs(id SERIAL PRIMARY KEY, title VARCHAR(50) NOT NULL, description VARCHAR(255) NOT NULL, employer VARCHAR(50) NOT NULL, location VARCHAR(50) NOT NULL, name VARCHAR(50) NOT NULL, salary REAL);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS control (username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), email boolean, sms boolean , advertising boolean, language VARCHAR(20));")
     cur.execute(f"CREATE TABLE IF NOT EXISTS profile(username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), title TEXT, major VARCHAR(70), university VARCHAR(70), about TEXT);")
@@ -23,4 +24,8 @@ def createTables():
         f"CREATE TABLE IF NOT EXISTS friends(user_1 VARCHAR(50), user_2 VARCHAR(50), pending BOOLEAN);")
     # Challenge 6
     cur.execute(f"CREATE TABLE IF NOT EXISTS applications(id SERIAL PRIMARY KEY, title VARCHAR(50), name VARCHAR(50), grad_date VARCHAR(50), start_date VARCHAR(50), reason VARCHAR(255), save BOOLEAN);")
+    # Challenge 7
+    # user_1 is recipient, user_2 is sender
+    cur.execute(f"CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_1 VARCHAR(50), user_2 VARCHAR(50), message VARCHAR(255));")
+
     conn.commit()

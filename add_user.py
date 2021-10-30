@@ -76,15 +76,28 @@ def addUser():
 
     first = input("First Name: ")
     last = input("Last Name: ")
+    
+    # Challenge 7 added plan to auth table
+    choice = input("Type 'plus' to sign up for the plus plan for $10/month or 'standard' for $0: ")
+    plan = str(choice).lower()
+    planInsert = ''
+    if(plan == "plus"):
+        print("Thank you for youre plus membership. You will be billed $10/month.")
+        planInsert = 'plus'
+    elif(plan == "standard"):
+        planInsert = 'standard'
+    else:
+        print("Invalid, please select one of the provided options")
+        addUser()
 
     # insert user info
-    auth = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
+    auth = f"INSERT INTO auth(username, password, first_name, last_name, plan) VALUES('{username}', '{password}', '{first}', '{last}', '{planInsert}');"
     control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
     profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
 
-    cur.execute(auth, (username, password, first, last))
+    cur.execute(auth, (username, password, first, last, plan))
     cur.execute(control, (username, 1, 1, 1, 'English'))
     cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
     cur.execute(experiences, (username, 'NULL', 'NULL',
