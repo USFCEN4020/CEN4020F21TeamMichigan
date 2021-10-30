@@ -32,7 +32,7 @@ def userPage(username):
         print("4.   job Search")
         print("5.   Go Back")
         print("6.   Show my Network")
-        print("7.   Message")
+        print("7.   Message") # Challenge 7
         print("-----------------------------------------")
 
         usr_input = int(input("Please enter your selection:\t"))
@@ -428,7 +428,7 @@ def learnSkillPage(userName):
         print("Please enter a valid input")
         learnSkillPage()
 
-
+# Challenge 7
 def messageFriend(username):
     print("-----------------------------------------")
     print("Please select one of the following options: ")
@@ -447,6 +447,7 @@ def messageFriend(username):
     else:
         userPage(username)
 
+# Challenge 7
 def sendMessage(username):
     conn = db_conn()
     cur = conn.cursor()
@@ -484,14 +485,14 @@ def sendMessage(username):
             messageFriend(username)
     messageFriend(username)
 
-
+# Challenge 7
 def findReceivedMessages(username):
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM messages WHERE user_1='{username}';")
     return cur.fetchall()
 
-
+# Challenge 7
 def checkInbox(username):
     conn = db_conn()
     cur = conn.cursor()
