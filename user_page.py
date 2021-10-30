@@ -449,8 +449,16 @@ def messageFriend(username):
 
 # Challenge 7
 def sendMessage(username):
+
     conn = db_conn()
     cur = conn.cursor()
+    
+    # In the even that the user is a plus member redirect to the plus function.
+    cur.execute(f"SELECT * FROM auth WHERE username = '{username}' AND plan = 'plus';")
+    results = cur.fetchall()
+    if(len(results) != 0):
+        sendMessagePlus(username)
+        return
 
     friendname = input("Please enter the recipients username:\t")
 
@@ -474,7 +482,6 @@ def sendMessage(username):
             else:
                 print(results[i][1])
 
-        messageFriend(username)
     else:
         if(lr == 0):
             message = input("Please enter your message:\t")
@@ -482,8 +489,54 @@ def sendMessage(username):
             cur.execute(f"INSERT INTO messages(user_1, user_2, message)  VALUES('{friendname}','{username}','{message}');")
             conn.commit()
             print("Message Sent!")
-            messageFriend(username)
-    messageFriend(username)
+    
+    return 0 # No problems
+    
+def sendMessagePlus(username):
+    conn = db_conn()
+    cur = conn.cursor()
+
+    while(True):
+        response = input("Do you know who you're looking for? Y/N \n")
+        if(response == "N"):
+            print("Here is a list of everyone in the dataBase")
+            cur.execute(f"SELECT * FROM auth;")
+            results = cur.fetchall()
+            for i in range(0, len(results)):
+                print("Username: ",results[i][0], " First name: ",results[i][2]," Last name: ",results[i][3],"\n")
+            break
+        elif(response == "Y"):
+            break
+        else:
+            print("Please enter Y/N")
+        
+    friendname = input("Please enter the recipients username:\t")
+
+    cur.execute(f"SELECT * FROM auth WHERE username = '{friendname}';")
+    results = cur.fetchall()
+    lr = 0
+    if(len(results) == 0):
+        lr = 1
+        cur.execute(f"SELECT * FROM auth WHERE username = '{friendname}';")
+        results = cur.fetchall()
+    
+    if(len(results) == 0):
+        print("I'm sorry, that person does not exist in the database")
+        print("Here is a list of everyone in the dataBase")
+        cur.execute(f"SELECT * FROM auth;")
+        results = cur.fetchall()
+        for i in range(0, len(results)):
+            print("Username: ",results[i][0], " First name: ",results[i][2]," Last name: ",results[i][3],"\n")
+
+    else:
+        if(lr == 0):
+            message = input("Please enter your message:\t")
+
+            cur.execute(f"INSERT INTO messages(user_1, user_2, message)  VALUES('{friendname}','{username}','{message}');")
+            conn.commit()
+            print("Message Sent!")
+    
+    return 0 #No problems
 
 # Challenge 7
 def findReceivedMessages(username):
