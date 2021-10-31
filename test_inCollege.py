@@ -1,4 +1,5 @@
 import pytest
+from db_connection import db_conn
 from inCollege import findPendingFriendRequests
 from tud_test_base import set_keyboard_input, get_display_output, mock_input, mock_input_output_end, mock_input_output_start, set_input
 from navigation_links import general
@@ -6,7 +7,7 @@ from authorization import isAuthorized
 from find_user import findUser
 from user_profile import updateTitle, updateMajor, updateUniName, updateAbout, viewProfile, updateExp, updateEdu, updateProfile
 from add_user import addDefaultUser, validatePassword, canAdd
-from user_page import confirmFriend, displayFriendsProfile, findUserFriends, makeFriends, removeFriend, lastNameSearch, universitySearch, majorSearch
+from user_page import confirmFriend, displayFriendsProfile, findReceivedMessages, findUserFriends, makeFriends, removeFriend, lastNameSearch, sendMessage, universitySearch, majorSearch
 from intership_page import applyJob, deleteJob, jobSearch, listAppliedJobs, postJob, listNotAppliedJobs, saveJob
 import io
 import sys
@@ -14,6 +15,85 @@ import app
 
 
 # should be able to run with py.test in terminal, add -v to see
+
+
+
+
+#challenge 7 tests
+#jim2301 and anessa23 are the two test accounts
+#they must be friends and jim must have already sent a message to anessa
+#additionally jim must not be friends with kelly324 to test the plus messaging feature
+#jim2301 should have no messages
+#anessa23 should have a message sent to her
+#jim should also be a plus user
+############################################################################
+
+
+#tests that the plan column was added to the table
+def planTest():
+    conn = db_conn()
+    cur = conn.cursor()
+    plan = ['standard','plus']
+    cur.execute(f"SELECT * FROM auth WHERE plan='{plan[0]}' OR plan = '{plan[1]}'")
+    results = cur.fetchall()
+    if len(results) != 0:
+        return 1
+    else:
+        return 0
+
+def inboxTesting():
+    results = [findReceivedMessages('jim2301'),findReceivedMessages('anessa23')]
+    if len(results[0]) == 0 and len(results[1]) != 0:
+        return 1
+    else:
+        return 0
+
+
+
+
+def sendTestMessage(username):
+    conn = db_conn()
+    cur = conn.cursor()
+
+
+    cur.execute(f"SELECT * FROM friends WHERE user_1 = 'anessa23' AND user_2 = '{username}' OR user_1 = '{username}' AND user_2 = 'anessa23';")
+    results = cur.fetchall()
+
+    message = "test message"
+
+    cur.execute(f"INSERT INTO messages(user_1, user_2, message)  VALUES('anessa23','{username}','{message}');")
+    conn.commit()
+    
+    results = cur.execute(f"SELECT * FROM messages WHERE user_1 = 'jim2301' AND user_2 = 'anessa23';")
+    if len(results) == 0:
+        return 0
+    else:
+        return 1
+
+def plusMessageTest(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    #jim and kelly324 are not friends        
+    friendname = 'kelly324'
+
+    message = "plus test message"
+
+    cur.execute(f"INSERT INTO messages(user_1, user_2, message)  VALUES('{friendname}','{username}','{message}');")
+    conn.commit()
+
+    results = cur.execute(f"SELECT * FROM messages WHERE user_1 = 'jim2301' AND user_2 = 'kelly324';")
+    if len(results) == 0:
+        return 0
+    else:
+        return 1
+
+def test_messaging():
+    assert inboxTesting() == 1
+    assert planTest() == 1
+    assert sendTestMessage('jim2301') == 1
+    assert plusMessageTest('jim2301') == 1
+
+############################################################################
 
 
 gen_output = ["Type your option to view: ",

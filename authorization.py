@@ -1,4 +1,4 @@
-import psycopg2
+#import psycopg2
 from db_connection import db_conn
 
 # Checks if the username and password exsist in the db

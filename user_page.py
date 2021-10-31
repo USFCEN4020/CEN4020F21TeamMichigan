@@ -453,7 +453,7 @@ def sendMessage(username):
     conn = db_conn()
     cur = conn.cursor()
     
-    # In the even that the user is a plus member redirect to the plus function.
+    # In the event that the user is a plus member redirect to the plus function.
     cur.execute(f"SELECT * FROM auth WHERE username = '{username}' AND plan = 'plus';")
     results = cur.fetchall()
     if(len(results) != 0):
