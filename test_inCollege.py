@@ -87,11 +87,22 @@ def plusMessageTest(username):
     else:
         return 1
 
+def displayAllInSystemTest():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM auth;")
+    results = cur.fetchall()
+    if len(results) == 0:
+        return 0
+    else:
+        return 1
+
 def test_messaging():
     assert inboxTesting() == 1
     assert planTest() == 1
     assert sendTestMessage('jim2301') == 1
     assert plusMessageTest('jim2301') == 1
+    assert displayAllInSystemTest() == 1
 
 ############################################################################
 
