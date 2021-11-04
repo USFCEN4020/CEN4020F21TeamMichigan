@@ -1,6 +1,6 @@
 from db_connection import db_conn
 from add_user import canAdd
-
+from notifications import numberOfJobsNoti
 """
     This file will operate the intership_page. Functionality is limited to creating a job post.(9/25/21)
 """
@@ -9,6 +9,7 @@ from add_user import canAdd
 
 
 def jobSearch(userName):
+    numberOfJobsNoti(userName)
     print("-----------------------------------------")
     print("Please select one of the four options")
     print("1.   Post Job")
