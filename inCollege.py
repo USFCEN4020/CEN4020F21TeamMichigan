@@ -6,7 +6,7 @@ from user_profile import updateProfile, viewProfile
 from db_connection import createTables
 from db_connection import db_conn
 from notifications import jobNoti, messageNoti, profileNoti
-from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers
+from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
 # Handles logins
 
 
@@ -51,6 +51,7 @@ def mainMenu(username):
         profileNoti(username)
         messageNoti(username)
         checkNewJobs(username)
+        checkDeletedJobs(username)
         checkNewUsers(username)
         print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
         option = int(input())

@@ -22,10 +22,11 @@ def createTables():
     cur.execute(f"CREATE TABLE IF NOT EXISTS education(username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), school VARCHAR(70), degree VARCHAR(70), year_attended TEXT);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS priorjobs(username VARCHAR(50), jobTitle VARCHAR(50));")
     cur.execute(f"CREATE TABLE IF NOT EXISTS priorusers(username VARCHAR(50), otheruser VARCHAR(50));")
+    cur.execute(f"CREATE TABLE IF NOT EXISTS appliedjobs(username VARCHAR(50), title VARCHAR(50));")
     cur.execute(
         f"CREATE TABLE IF NOT EXISTS friends(user_1 VARCHAR(50), user_2 VARCHAR(50), pending BOOLEAN);")
     # Challenge 6
-    cur.execute(f"CREATE TABLE IF NOT EXISTS applications(id SERIAL PRIMARY KEY, title VARCHAR(50), name VARCHAR(50), grad_date VARCHAR(50), start_date VARCHAR(50), reason VARCHAR(255), save BOOLEAN);")
+    cur.execute(f"CREATE TABLE IF NOT EXISTS applications(id SERIAL PRIMARY KEY, title VARCHAR(50), name VARCHAR(50), grad_date VARCHAR(50), start_date VARCHAR(50), reason VARCHAR(255), pending BOOLEAN);")
     # Challenge 7
     # user_1 is recipient, user_2 is sender
     cur.execute(f"CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_1 VARCHAR(50), user_2 VARCHAR(50), message VARCHAR(255));")

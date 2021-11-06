@@ -92,25 +92,51 @@ def checkNewJobs(username):
     # Print every new job that wasn't in the past jobs the user previsouly knew.
     for i in range(0, newJobNumber):
         print("-----------------------------------")
-        print("A new job", newJobTitles[i], "has been posted")
+        print("A new job", newJobTitles[i], "has been posted.")
         print("-----------------------------------")
         
     return 1; # All has gone well.
 
-"""def checkDeletedJobs(username):
+def checkDeletedJobs(username):
     # Get the lists of the new jobs and get the list of the last known jobs the user had.
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
         f"SELECT * FROM jobs;"
     )
-    newJobs = cur.fetchall()
+    oldJobs = cur.fetchall()
     conn = db_conn()
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM priorusers WHERE username='{username}';"
+        f"SELECT * FROM appliedjobs WHERE username='{username}';"
     )
-    oldJobs = cur.fetchall()"""
+    newJobs = cur.fetchall()
+    
+    newJobNumber = 0
+    newJobTitles = []
+    for i in range(0, len(newJobs)):
+        tempTitle = newJobs[i][1]
+        booleanFlag = 0
+        for j in range(0, len(oldJobs)):
+            if(tempTitle == oldJobs[j][1]):
+                booleanFlag = 1
+        if(booleanFlag == 0):
+            newJobNumber += 1
+            newJobTitles.append(newJobs[i][1])
+            conn = db_conn()
+            cur = conn.cursor()
+            cur.execute(
+                f"DELETE FROM appliedjobs WHERE title='{newJobs[i][1]}';"
+            )
+            conn.commit()
+            
+    # Print every new job that wasn't in the past jobs the user previsouly knew.
+    for i in range(0, newJobNumber):
+        print("-----------------------------------")
+        print(newJobTitles[i], "job that you applied for has been deleted.")
+        print("-----------------------------------")
+        
+    return 1; # All has gone well.
     
 # Checks to see if there are new jobs with sync to user.
 def checkNewUsers(username):
@@ -153,7 +179,7 @@ def checkNewUsers(username):
     # Print every new job that wasn't in the past jobs the user previsouly knew.
     for i in range(0, newUserNumber):
         print("-----------------------------------")
-        print(newFirstName[i], newLastName[i], "has joined InCollege")
+        print(newFirstName[i], newLastName[i], "has joined InCollege.")
         print("-----------------------------------")
         
     return 1; # All has gone well.

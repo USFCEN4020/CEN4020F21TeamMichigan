@@ -192,8 +192,15 @@ def applyJob(userName):
         grad = input("Please enter your graduation date:\t")
         start = input("Please enter the date you wish to start:\t")
         reason = input("Please share why you'd be a good fit for this role:\t")
-        query = f"INSERT INTO applications (title, name, grad_date, start_date, reason, pending) VALUES ('{title}', '{userName}', '{grad}', '{start}', '{reason}', FALSE);"
-        cur.execute(query, (title, userName, grad, start, reason))
+        cur.execute(
+            query = f"INSERT INTO applications (title, name, grad_date, start_date, reason, pending) VALUES ('{title}', '{userName}', '{grad}', '{start}', '{reason}', FALSE);"
+        )
+        conn.commit()
+        conn = db_conn()
+        cur = conn.cursor()
+        cur.execute(
+            f"INSERT INTO appliedjobs (username, title) VALUES ('{userName}', '{title}');"
+        )
         conn.commit()
         return 1
 
