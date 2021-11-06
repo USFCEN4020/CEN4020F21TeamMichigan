@@ -30,4 +30,4 @@ list of all tables in the database with column names:
 \*For testing this program the DATABASE incollege must be created like so on line 12 of the ReadMe. The tables need not be 
 created individualaly simply run the 'python inCollege.py' one time and this create all the tables needed for testing the code.
 
-Command to clear all prior data: 'DROP TABLE profile; DROP TABLE  jobs; DROP TABLE friends; DROP TABLE experiences; DROP TABLE control; DROP TABLE education; DROP TABLE auth;'
+Command to clear all prior data: 'DROP TABLE profile; DROP TABLE  jobs; DROP TABLE friends; DROP TABLE experiences; DROP TABLE control; DROP TABLE education; DROP TABLE auth; DROP TABLE messages; DROP TABLE applications;'

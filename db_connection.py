@@ -20,6 +20,8 @@ def createTables():
     cur.execute(f"CREATE TABLE IF NOT EXISTS profile(username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), title TEXT, major VARCHAR(70), university VARCHAR(70), about TEXT);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS experiences(username VARCHAR(50), title VARCHAR(70), employer VARCHAR(70), date_started TEXT, date_ended TEXT, location VARCHAR(70), description TEXT);")
     cur.execute(f"CREATE TABLE IF NOT EXISTS education(username VARCHAR(50) PRIMARY KEY REFERENCES auth(username), school VARCHAR(70), degree VARCHAR(70), year_attended TEXT);")
+    cur.execute(f"CREATE TABLE IF NOT EXISTS priorjobs(username VARCHAR(50), jobTitle VARCHAR(50));")
+    cur.execute(f"CREATE TABLE IF NOT EXISTS priorusers(username VARCHAR(50), otheruser VARCHAR(50));")
     cur.execute(
         f"CREATE TABLE IF NOT EXISTS friends(user_1 VARCHAR(50), user_2 VARCHAR(50), pending BOOLEAN);")
     # Challenge 6

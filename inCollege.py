@@ -5,7 +5,11 @@ from navigation_links import usefulLink, importantLink
 from user_profile import updateProfile, viewProfile
 from db_connection import createTables
 from db_connection import db_conn
+<<<<<<< Updated upstream
 from notifications import jobNoti, messageNoti, profileNoti
+=======
+from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers
+>>>>>>> Stashed changes
 # Handles logins
 
 
@@ -49,6 +53,11 @@ def mainMenu(username):
         jobNoti(username)
         profileNoti(username)
         messageNoti(username)
+<<<<<<< Updated upstream
+=======
+        checkNewJobs(username)
+        checkNewUsers(username)
+>>>>>>> Stashed changes
         print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
         option = int(input())
         while not (option > 0 and option < 6):
