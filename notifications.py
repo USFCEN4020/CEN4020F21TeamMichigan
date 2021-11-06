@@ -51,8 +51,6 @@ def numberOfJobsNoti(username):
     print("-----------------------------------")
     print("You have currently applied for ", len(records), " jobs!")
     print("-----------------------------------")
-<<<<<<< Updated upstream
-=======
 
  
 # Checks to see if there are new jobs with sync to user.
@@ -159,4 +157,3 @@ def checkNewUsers(username):
         print("-----------------------------------")
         
     return 1; # All has gone well.
->>>>>>> Stashed changes
