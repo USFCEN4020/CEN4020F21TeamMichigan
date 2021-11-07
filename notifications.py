@@ -12,6 +12,7 @@ def jobNoti(username):
         print("------------------------------------------------------------------------------- ")
         print("Remember - you're going to want to have a job when you graduate. Make sure that you start to apply for jobs today!")
         print("-------------------------------------------------------------------------------")
+    return 1; # All has gone well.
 
 
 def profileNoti(username):
@@ -25,6 +26,7 @@ def profileNoti(username):
         print("-----------------------------------")
         print("Don't forget to create a profile!")
         print("-----------------------------------")
+    return 1; # All has gone well.
 
 
 def messageNoti(username):
@@ -39,6 +41,8 @@ def messageNoti(username):
         print("You have messages waiting for you!")
         print("-----------------------------------")
 
+    return 1; # All has gone well.
+
 
 def numberOfJobsNoti(username):
     conn = db_conn()
@@ -51,6 +55,8 @@ def numberOfJobsNoti(username):
     print("-----------------------------------")
     print("You have currently applied for ", len(records), " jobs!")
     print("-----------------------------------")
+
+    return 1; # All has gone well.
 
  
 # Checks to see if there are new jobs with sync to user.
