@@ -7,6 +7,7 @@ from db_connection import createTables
 from db_connection import db_conn
 from notifications import jobNoti, messageNoti, profileNoti
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
+from training import trainingMenu, courses
 # Handles logins
 
 
@@ -53,9 +54,9 @@ def mainMenu(username):
         checkNewJobs(username)
         checkDeletedJobs(username)
         checkNewUsers(username)
-        print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. Continue to user page")
+        print("Type your option to proceed: \n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Edit Profile\n 4. View Profile\n 5. InCollege Learning\n 6. Continue to user page")
         option = int(input())
-        while not (option > 0 and option < 6):
+        while not (option > 0 and option < 7):
             print("Invalid option")
             option = input()
         if (option == 1):
@@ -67,6 +68,8 @@ def mainMenu(username):
             updateProfile(username)
         elif (option == 4):
             viewProfile(username)
+        elif (option == 5):
+            courses(username)
         else:
             userPage(username)
 
@@ -88,7 +91,7 @@ def main():
     print(" ")
     print("---welcome to inCollege!---")
 
-    print("Please type your option:\n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Continue to InCollege")
+    print("Please type your option:\n 1. View Useful Links\n 2. View InCollege Important Links\n 3. Training\n 4. Continue to InCollege")
     print("---------------")
     choice = input()
 
@@ -97,6 +100,8 @@ def main():
     elif choice == "2":
         importantLink("None")
     elif choice == "3":
+        trainingMenu()
+    elif choice == "4":
         print("My Story:")
         print("I had a low GPA and no experience while in college. My LinkedIn profile was blank because I hadn't done anything yet. That was until I found inCollege!")
         print(
