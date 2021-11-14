@@ -30,5 +30,6 @@ def createTables():
     # Challenge 7
     # user_1 is recipient, user_2 is sender
     cur.execute(f"CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_1 VARCHAR(50), user_2 VARCHAR(50), message VARCHAR(255));")
-
+    # Challenge 9
+    cur.execute(f"CREATE TABLE IF NOT EXISTS courses(username VARCHAR(50),CourseName VARCHAR(255) ,courseNumber VARCHAR(50));")
     conn.commit()

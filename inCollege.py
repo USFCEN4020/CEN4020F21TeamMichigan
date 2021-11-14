@@ -11,16 +11,19 @@ from training import trainingMenu, courses
 # Handles logins
 
 
-def login():
+def login(startpage):
     username = input("Username: ")
     password = input("Password: ")
     next = isAuthorized(username, password)
     if (next):
-        mainMenu(username)
+        if (startpage == 1):
+            mainMenu(username)
+        elif (startpage == 0):
+            courses(username)
     else:
         print("Login failed...")
         print("Please try again")
-        login()
+        login(1)
 
 # this function executes a querey to see how many pending friend requests
 # a user has
@@ -81,7 +84,7 @@ def signup():
         addUser()
         print("Thank you for signing up!")
         print("Now log in with your new username and password")
-        login()
+        login(1)
     else:
         print("All permitted accounts have been created, please come back later")
 
@@ -116,7 +119,7 @@ def main():
 
         # interprests user input
         if (convert == "login"):
-            login()
+            login(1)
         elif (convert == "signup"):
             signup()
         elif (convert == "video"):
@@ -133,7 +136,7 @@ def main():
                 if (conv == "signup"):
                     signup()
                 else:
-                    login()
+                    login(1)
             else:
                 print("They are not yet a part of the InCollege system yet")
                 main()
