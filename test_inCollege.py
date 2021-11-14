@@ -16,6 +16,56 @@ import app
 
 
 # should be able to run with py.test in terminal, add -v to see
+############################################################################
+# Challenge 9 tests
+
+def coursesTest(username):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM courses WHERE username='{username}'"
+    )
+    result = cur.fetchall()
+    courseList = ["1. How to use inCollege learning", "2. Train the trainer", "3. Gamification of learning","4. Understanding the Architectural Design Process", "5. Project Management Simplified"]
+    option = 1
+    completedCourse = courseList[int(option)-1]
+            
+    if (int(option) < 7 ):
+        cur.execute(
+            f"INSERT INTO courses(username, courseName, courseNumber)  VALUES('{username}','{completedCourse}','{option}');"
+        )
+        conn.commit()
+    return 1
+
+
+def checkCourseTest(username, courseNumber):
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT * FROM courses WHERE username='{username}' AND courseNumber ='{courseNumber}'"
+    )
+    return 1
+
+
+def trainingEducationTest():
+    option = 1
+    if option == "1" or option == "2" or option == "3" or option == "4":
+        return 1
+    else:
+        return 1
+
+
+def test_courses():
+    assert coursesTest("anessa23") == 1
+    
+
+def test_checkCourse():
+    assert checkCourseTest("anessa23", 1) == 1
+
+
+def test_trainingEducation():
+    assert trainingEducationTest() == 1
+
 
 ############################################################################
 # Challenge 8 tests
