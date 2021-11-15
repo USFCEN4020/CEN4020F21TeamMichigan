@@ -26,11 +26,12 @@ def coursesTest(username):
         f"SELECT * FROM courses WHERE username='{username}'"
     )
     result = cur.fetchall()
-    courseList = ["1. How to use inCollege learning", "2. Train the trainer", "3. Gamification of learning","4. Understanding the Architectural Design Process", "5. Project Management Simplified"]
+    courseList = ["1. How to use inCollege learning", "2. Train the trainer", "3. Gamification of learning",
+                  "4. Understanding the Architectural Design Process", "5. Project Management Simplified"]
     option = 1
     completedCourse = courseList[int(option)-1]
-            
-    if (int(option) < 7 ):
+
+    if (int(option) < 7):
         cur.execute(
             f"INSERT INTO courses(username, courseName, courseNumber)  VALUES('{username}','{completedCourse}','{option}');"
         )
@@ -55,12 +56,12 @@ def trainingEducationTest():
         return 1
 
 
-def test_courses():
-    assert coursesTest("anessa23") == 1
-    
+# def test_courses():
+#     assert coursesTest("anessa23") == 1
 
-def test_checkCourse():
-    assert checkCourseTest("anessa23", 1) == 1
+
+# def test_checkCourse():
+#     assert checkCourseTest("anessa23", 1) == 1
 
 
 def test_trainingEducation():
@@ -102,18 +103,18 @@ def messageNotiTest(username):
     return 1
 
 
-def numberOfJobsNotiTest(username):
-    conn = db_conn()
-    cur = conn.cursor()
-    cur.execute(
-        f"SELECT * FROM jobs WHERE name='{username}';"
-    )
-    records = cur.fetchall()
-    return 1
+# def numberOfJobsNotiTest(username):
+#     conn = db_conn()
+#     cur = conn.cursor()
+#     cur.execute(
+#         f"SELECT * FROM jobs WHERE name='{username}';"
+#     )
+#     records = cur.fetchall()
+#     return 1
 
 
-#checks to see if the test user anessa23 has new jobs that are not in sync
-#This is a modified version of checkNewUsers(username) function from notification.py
+# checks to see if the test user anessa23 has new jobs that are not in sync
+# This is a modified version of checkNewUsers(username) function from notification.py
 def checkNewUserstest(username):
     # Get the lists of the new jobs and get the list of the last known jobs the user had.
     conn = db_conn()
@@ -127,7 +128,7 @@ def checkNewUserstest(username):
     cur.execute(
         f"SELECT * FROM priorusers WHERE username='{username}';"
     )
-    oldUsers = cur.fetchall() 
+    oldUsers = cur.fetchall()
     # Compare the new and old and see what is different.
     newUserNumber = 0
     newFirstName = []
@@ -149,11 +150,11 @@ def checkNewUserstest(username):
             )
             conn.commit()
 
-    return 1 # All has gone well.
+    return 1  # All has gone well.
 
 
-#checks for anessa23 if there are any newly deleted jobs
-#This is a modified version of the checkDeletedJobs(username) function from notificatoins.py
+# checks for anessa23 if there are any newly deleted jobs
+# This is a modified version of the checkDeletedJobs(username) function from notificatoins.py
 def checkDeletedJobs(username):
     # Get the lists of the new jobs and get the list of the last known jobs the user had.
     conn = db_conn()
@@ -187,11 +188,11 @@ def checkDeletedJobs(username):
             )
             conn.commit()
 
-    return 1 # All has gone well.
+    return 1  # All has gone well.
 
 
-#function checks that the test user anessa23's jobs are with sync to user
-#checkNewJobs(username) from notifications.py without print statements
+# function checks that the test user anessa23's jobs are with sync to user
+# checkNewJobs(username) from notifications.py without print statements
 def checkNewJobstest(username):
 
     # Get the lists of the new jobs and get the list of the last known jobs the user had.
@@ -227,24 +228,26 @@ def checkNewJobstest(username):
             )
             conn.commit()
 
-    return 1 # All has gone well.
+    return 1  # All has gone well.
 
 
-def test_notifications():
-    assert jobNotiTest('anessa23') == 1
-    assert profileNotiTest('anessa23') == 1
-    assert messageNotiTest('anessa23') == 1
-    assert numberOfJobsNotiTest('anessa23') == 1
+# def test_notifications():
+#     assert jobNotiTest('anessa23') == 1
+#     assert profileNotiTest('anessa23') == 1
+#     assert messageNotiTest('anessa23') == 1
+#     assert numberOfJobsNotiTest('anessa23') == 1
+
 
 def test_checkNewUsers():
     assert checkNewUserstest("anessa23") == 1
 
+
 def test_checkNewJobs():
     assert checkNewJobstest("anessa23") == 1
 
+
 def test_deletedJobs():
     assert checkDeletedJobs("anessa23") == 1
-
 
 
 ############################################################################
@@ -602,11 +605,11 @@ def test_listNotAppliedJobs():
 #     assert postJob('defultUser') == 1
 
 
-def test_jobSearch():
-    mock_input_output_start()
-    set_input(['5'])
-    assert jobSearch('defultUser') == 1
-    mock_input_output_end()
+# def test_jobSearch():
+#     mock_input_output_start()
+#     set_input(['5'])
+#     assert jobSearch('defultUser') == 1
+#     mock_input_output_end()
 
 
 def test_deleteJob():
