@@ -42,7 +42,7 @@ def userPage(username):
         elif usr_input == 2:
             learnSkillPage(username)
         elif usr_input == 3:
-            login()
+            login(1)
         elif usr_input == 4:
             jobSearch(username)
         elif usr_input == 5:
