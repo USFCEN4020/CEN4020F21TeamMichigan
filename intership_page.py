@@ -1,6 +1,7 @@
 from db_connection import db_conn
 from add_user import canAdd
 from notifications import numberOfJobsNoti
+from input_API import myCollegeJobsOutput
 """
     This file will operate the intership_page. Functionality is limited to creating a job post.(9/25/21)
 """
@@ -24,6 +25,7 @@ def jobSearch(userName):
         response = totalAccountsJobs()
         if(canAdd(response)):  # Check to make sure only 10 jobs created.
             postJob(userName)
+            myCollegeJobsOutput()
         else:
             print("\nToo many job posts currently\n")
             jobSearch(userName)
@@ -34,6 +36,7 @@ def jobSearch(userName):
             jobSearch(userName)
         else:
             print("The job post has been succesfully deleted.")
+            myCollegeJobsOutput()
             jobSearch(userName)
     elif(usr_input == 3):  # Challenge 6
         seen = listJobs(userName)

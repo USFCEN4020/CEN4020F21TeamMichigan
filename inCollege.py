@@ -7,6 +7,7 @@ from db_connection import createTables
 from db_connection import db_conn
 from notifications import jobNoti, messageNoti, profileNoti
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
+from input_API import startup_API, myCollegeProfiles
 # Handles logins
 
 
@@ -76,6 +77,7 @@ def signup():
     response = totalAccount()
     if(canAdd(response)):
         addUser()
+        myCollegeProfiles()
         print("Thank you for signing up!")
         print("Now log in with your new username and password")
         login()
@@ -85,6 +87,7 @@ def signup():
 
 def main():
     createTables()
+    startup_API()
     print(" ")
     print("---welcome to inCollege!---")
 

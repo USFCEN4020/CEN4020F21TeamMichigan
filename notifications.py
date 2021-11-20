@@ -95,7 +95,7 @@ def checkNewJobs(username):
         print("A new job", newJobTitles[i], "has been posted.")
         print("-----------------------------------")
         
-    return 1; # All has gone well.
+    return 1 # All has gone well.
 
 def checkDeletedJobs(username):
     # Get the lists of the new jobs and get the list of the last known jobs the user had.
@@ -136,7 +136,7 @@ def checkDeletedJobs(username):
         print(newJobTitles[i], "job that you applied for has been deleted.")
         print("-----------------------------------")
         
-    return 1; # All has gone well.
+    return 1 # All has gone well.
     
 # Checks to see if there are new jobs with sync to user.
 def checkNewUsers(username):
@@ -182,4 +182,4 @@ def checkNewUsers(username):
         print(newFirstName[i], newLastName[i], "has joined InCollege.")
         print("-----------------------------------")
         
-    return 1; # All has gone well.
+    return 1 # All has gone well.
