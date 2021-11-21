@@ -8,7 +8,7 @@ from db_connection import db_conn
 from notifications import jobNoti, messageNoti, profileNoti
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
 from training import trainingMenu, courses
-from input_API import startup_API, myCollegeProfiles
+from input_API import startup_API, myCollegeProfiles, myCollegeJobsOutput, myCollegeUsers,myCollegeTraining, myCollegeAppliedJob, myCollegeSavedJobs
 # Handles logins
 
 
@@ -21,6 +21,7 @@ def login(startpage):
             mainMenu(username)
         elif (startpage == 0):
             courses(username)
+            myCollegeTraining()
     else:
         print("Login failed...")
         print("Please try again")
@@ -74,6 +75,7 @@ def mainMenu(username):
             viewProfile(username)
         elif (option == 5):
             courses(username)
+            myCollegeTraining()
         else:
             userPage(username)
 
@@ -94,6 +96,11 @@ def signup():
 def main():
     createTables()
     startup_API()
+    myCollegeJobsOutput()
+    myCollegeUsers()
+    myCollegeTraining()
+    myCollegeAppliedJob()
+    myCollegeSavedJobs()
     print(" ")
     print("---welcome to inCollege!---")
 
@@ -125,6 +132,7 @@ def main():
             login(1)
         elif (convert == "signup"):
             signup()
+            myCollegeUsers()
         elif (convert == "video"):
             print("Video is now playing")
             main()
