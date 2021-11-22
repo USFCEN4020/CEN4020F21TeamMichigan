@@ -8,7 +8,7 @@ from db_connection import db_conn
 from notifications import jobNoti, messageNoti, profileNoti
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
 from training import trainingMenu, courses
-from input_API import startup_API, myCollegeProfiles, myCollegeJobsOutput, myCollegeUsers,myCollegeTraining, myCollegeAppliedJob, myCollegeSavedJobs
+from input_API import startup_API, myCollegeProfiles, myCollegeJobsOutput, myCollegeUsers, myCollegeTraining, myCollegeAppliedJob, myCollegeSavedJobs
 # Handles logins
 
 
@@ -95,8 +95,9 @@ def signup():
 
 def main():
     createTables()
-    startup_API()
+    # startup_API()
     myCollegeJobsOutput()
+    myCollegeProfiles()
     myCollegeUsers()
     myCollegeTraining()
     myCollegeAppliedJob()
