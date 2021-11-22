@@ -1,20 +1,22 @@
-#Epic #10
+# Epic #10
 from db_connection import db_conn
 import fileinput
 
-#Epic #10
+# Epic #10
+
+
 def add_usr_API(username, first, last, password):
     # Open a cursor to perform database operations
     conn = db_conn()
     cur = conn.cursor()
 
-    #if user already exists then it returns 0
+    # if user already exists then it returns 0
     cur.execute(
         f"SELECT * FROM auth WHERE username='{username}';"
     )
     if cur.fetchone() is None:
         return 0
-    
+
     planInsert = 'standard'
     # insert user info
     auth = f"INSERT INTO auth(username, password, first_name, last_name, plan) VALUES('{username}', '{password}', '{first}', '{last}', '{planInsert}');"
@@ -32,7 +34,9 @@ def add_usr_API(username, first, last, password):
 
     conn.commit()
     return 1
-#Epic #10
+# Epic #10
+
+
 def add_job_API(inp):
     title = inp[0]
     des = ""
@@ -48,7 +52,9 @@ def add_job_API(inp):
     conn.commit()
     return 1
 
-#Epic #10
+# Epic #10
+
+
 def add_training_API(training_prog):
     conn = db_conn()
     cur = conn.cursor()
@@ -58,8 +64,7 @@ def add_training_API(training_prog):
     return 1
 
 
-
-#Epic #10
+# Epic #10
 def startup_API():
 
     #student account API
@@ -105,9 +110,9 @@ def startup_API():
             add_training_API(line)
 
 
-#Epic #10
+# Epic #10
 def myCollegeJobsOutput():
-    file = open("MyCollege_jobs.txt","w")
+    file = open("MyCollege_jobs.txt", "w")
     conn = db_conn()
     cur = conn.cursor()
 
@@ -118,16 +123,17 @@ def myCollegeJobsOutput():
     if len(results) == 0:
         file.close()
         return 1
-    
-    for job  in results:
+
+    for job in results:
         for i in range(len(job)):
-            file.write(job[i] + "\n")
+            file.write(str(job[i]) + "\n")
         file.write("=====\n")
+    file.close()
     return 1
-    
+
 
 def myCollegeProfiles():
-    file = open("MyCollege_profiles.txt","w")
+    file = open("MyCollege_profiles.txt", "w")
     conn = db_conn()
     cur = conn.cursor()
 
@@ -138,12 +144,114 @@ def myCollegeProfiles():
     if len(results) == 0:
         file.close()
         return 1
-    
-    for student  in results:
+
+    for student in results:
         for elem in student:
             file.write(elem + "\n")
         file.write("=====\n")
+    file.close()
     return 1
 
 
+def myCollegeUsers():
+    file = open("MyCollege_users.txt", "w")
+    conn = db_conn()
+    cur = conn.cursor()
 
+    cur.execute(f"SELECT username, plan FROM auth;")
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        file.close()
+        return 1
+
+    for users in results:
+        for elem in users:
+            file.write(elem + " ")
+        file.write("\n")
+    file.close()
+    return 1
+
+
+def myCollegeTraining():
+    file = open("MyCollege_training.txt", "w")
+    conn = db_conn()
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT username FROM auth;")
+
+    results = cur.fetchall()
+
+    if len(results) == 0:
+        file.close()
+        return 1
+
+    for users in results:
+        for elem in users:
+            file.write(elem + "\n")
+            cur.execute(
+                f"SELECT courseName FROM courses WHERE username = '{elem}';")
+            courseList = cur.fetchall()
+            for x in courseList:
+                for y in x:
+                    file.write(y + "\n")
+
+        file.write("=====\n")
+    file.close()
+    return 1
+
+
+def myCollegeAppliedJob():
+    file = open("MyCollege_appliedJobs.txt", "w")
+    conn = db_conn()
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT title FROM jobs;")
+
+    results = cur.fetchall()
+
+    if len(results) == 0:
+        file.close()
+        return 1
+
+    for users in results:
+        for elem in users:
+            file.write(elem + "\n")
+            cur.execute(
+                f"SELECT name, reason FROM applications WHERE title = '{elem}';")
+            nameReason = cur.fetchall()
+            for x in nameReason:
+                for y in x:
+                    file.write(y + "\n")
+
+        file.write("=====\n")
+    file.close()
+    return 1
+
+
+def myCollegeSavedJobs():
+    file = open("MyCollege_savedJobs.txt", "w")
+    conn = db_conn()
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT username FROM auth;")
+
+    results = cur.fetchall()
+
+    if len(results) == 0:
+        file.close()
+        return 1
+
+    for users in results:
+        for elem in users:
+            file.write(elem + "\n")
+            cur.execute(
+                f"SELECT title FROM applications WHERE pending = 'true' AND name = '{elem}';")
+            jobTitle = cur.fetchall()
+            for x in jobTitle:
+                for y in x:
+                    file.write(y + "\n")
+
+        file.write("=====\n")
+    file.close()
+    return 1

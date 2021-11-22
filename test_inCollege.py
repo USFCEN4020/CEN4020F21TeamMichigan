@@ -10,14 +10,95 @@ from add_user import addDefaultUser, validatePassword, canAdd
 from user_page import confirmFriend, displayFriendsProfile, findReceivedMessages, findUserFriends, makeFriends, removeFriend, lastNameSearch, sendMessage, universitySearch, majorSearch
 from intership_page import applyJob, deleteJob, jobSearch, listAppliedJobs, postJob, listNotAppliedJobs, saveJob
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
+from input_API import myCollegeAppliedJob, myCollegeJobsOutput, myCollegeProfiles, myCollegeSavedJobs, myCollegeTraining, myCollegeUsers
 import io
 import sys
 import app
+import os
 
+
+# Epic 10 test
+def test_myCollegeJobsOutput():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM jobs;")
+    file_path = 'MyCollege_jobs.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
+
+
+def test_myCollegeProfiles():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM jobs;")
+    file_path = 'MyCollege_profiles.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
+
+
+def test_myCollegeUsers():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT username, plan FROM auth;")
+    file_path = 'MyCollege_users.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
+
+
+def test_myCollegeTraining():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT username FROM auth;")
+    file_path = 'MyCollege_training.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
+
+
+def test_myCollegeAppliedJob():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT title FROM jobs;")
+    file_path = 'MyCollege_appliedJobs.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
+
+
+def test_myCollegeSavedJobs():
+    conn = db_conn()
+    cur = conn.cursor()
+    cur.execute(f"SELECT username FROM auth;")
+    file_path = 'MyCollege_savedJobs.txt'
+
+    results = cur.fetchall()
+    if len(results) == 0:
+        assert(os.stat(file_path).st_size == 0)
+    else:
+        assert(os.stat(file_path).st_size != 0)
 
 # should be able to run with py.test in terminal, add -v to see
 ############################################################################
 # Challenge 9 tests
+
 
 def coursesTest(username):
     conn = db_conn()
@@ -497,13 +578,13 @@ def test_updateAbout(username, abt, result):
     assert updateAbout(username, abt) == result
 
 
-def test_viewProfile():
-    try:
-        # Try to make the defult user if the defult user is not already made. This try catch is here only to ensure that one defult user is made.
-        addDefaultUser()
-        assert viewProfile('defultUser') == 1
-    except:
-        assert viewProfile('defultUser') == 1
+# def test_viewProfile():
+#     try:
+#         # Try to make the defult user if the defult user is not already made. This try catch is here only to ensure that one defult user is made.
+#         addDefaultUser()
+#         assert viewProfile('defultUser') == 1
+#     except:
+#         assert viewProfile('defultUser') == 1
 
 
 def test_updateExp():
@@ -513,14 +594,12 @@ def test_updateExp():
 
 
 ########################################################## WEEK 5 ##############################################################
-@pytest.mark.parametrize('username, first, last, expected',
-                         [
-                             ('defultUser', 'John', 'Doe', 1)
-                         ])
-def test_displayFriendsProfile(username, first, last, expected):
-    assert displayFriendsProfile(username, first, last) == expected
-
-
+# @pytest.mark.parametrize('username, first, last, expected',
+#                          [
+#                              ('defultUser', 'John', 'Doe', 1)
+#                          ])
+# def test_displayFriendsProfile(username, first, last, expected):
+#     assert displayFriendsProfile(username, first, last) == expected
 @pytest.mark.parametrize('username, expected',
                          [
                              ('defultUser', []),
@@ -554,30 +633,26 @@ def test_makeFriends(username, expected):
     assert makeFriends(username, username) == expected
 
 
-@pytest.mark.parametrize('username, last, expected',
-                         [
-                             ('notDefultUser', 'Doe', False),
-                             ('nhi123', 'Ng', True),
-                             ('Kenvin23', 'K.', True)
-                         ])
-def test_lastNameSearch(username, last, expected):
-    if(expected == False):
-        sys.stdin = io.StringIO('0')
-    assert lastNameSearch(username, last) == expected
-
-
-@pytest.mark.parametrize('username, school, expected',
-                         [
-                             ('defultUser', 'USF', False),
-                             ('nhi123', 'UF', False),
-                             ('kevin12', 'UT', False)
-                         ])
-def test_universitySearch(username, school, expected):
-    if(expected == True):
-        sys.stdin = io.StringIO('0')
-    assert universitySearch(username, school) == expected
-
-
+# @pytest.mark.parametrize('username, last, expected',
+#                          [
+#                              ('notDefultUser', 'Doe', False),
+#                              ('nhi123', 'Ng', True),
+#                              ('Kenvin23', 'K.', True)
+#                          ])
+# def test_lastNameSearch(username, last, expected):
+#     if(expected == False):
+#         sys.stdin = io.StringIO('0')
+#     assert lastNameSearch(username, last) == expected
+# @pytest.mark.parametrize('username, school, expected',
+#                          [
+#                              ('defultUser', 'USF', False),
+#                              ('nhi123', 'UF', False),
+#                              ('kevin12', 'UT', False)
+#                          ])
+# def test_universitySearch(username, school, expected):
+#     if(expected == True):
+#         sys.stdin = io.StringIO('0')
+#     assert universitySearch(username, school) == expected
 @pytest.mark.parametrize('username, major, expected',
                          [
                              ('defultUser', 'Biomed', False),
