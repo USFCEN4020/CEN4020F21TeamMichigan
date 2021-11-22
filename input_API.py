@@ -54,7 +54,7 @@ def add_training_API(training_prog):
     cur = conn.cursor()
 
     cur.execute(f"INSERT INTO training(description) VALUES('{training_prog}');")
-    cur.execute()
+    conn.commit()
     return 1
 
 
@@ -64,10 +64,16 @@ def startup_API():
 
     #student account API
     first = last = password = usr =""
-    file = open("studentAccounts.txt", 'r')
+    try:
+        file = open("studentAccounts.txt", 'r')
+    except FileNotFoundError:
+        print()
     if file != FileNotFoundError:
         for i in range(10):
             line = file.readline()
+            if len(line) == 0:
+                break
+            print("test")
             line.split()
             usr = line[0]
             first = line[1]
@@ -75,12 +81,13 @@ def startup_API():
             line = file.readline()
             password = line[0]
             line = file.readline()
-            if line == None:
-                break
             add_usr_API(usr, first, last, password)
     
     #Jobs API
-    file = open("newJobs.txt")
+    try:
+        file = open("newJobs.txt")
+    except FileNotFoundError:
+        print()
     inp = []
     if file != FileNotFoundError:
         for line in file.readline():
@@ -89,7 +96,10 @@ def startup_API():
                 add_job_API(inp)
 
     #training API
-    file = open("newtraining.txt",'r')
+    try:
+        file = open("newtraining.txt",'r')
+    except FileNotFoundError:
+        print()
     if file != FileNotFoundError:
         for line in file.readline():
             add_training_API(line)
