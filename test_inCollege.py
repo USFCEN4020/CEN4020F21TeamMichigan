@@ -6,11 +6,12 @@ from navigation_links import general
 from authorization import isAuthorized
 from find_user import findUser
 from user_profile import updateTitle, updateMajor, updateUniName, updateAbout, viewProfile, updateExp, updateEdu, updateProfile
-from add_user import addDefaultUser, validatePassword, canAdd
+from add_user import addDefaultUser, validatePassword, canAdd, removeDefultUser
 from user_page import confirmFriend, displayFriendsProfile, findReceivedMessages, findUserFriends, makeFriends, removeFriend, lastNameSearch, sendMessage, universitySearch, majorSearch
 from intership_page import applyJob, deleteJob, jobSearch, listAppliedJobs, postJob, listNotAppliedJobs, saveJob
 from notifications import jobNoti, messageNoti, profileNoti, checkNewJobs, checkNewUsers, checkDeletedJobs
 from input_API import myCollegeAppliedJob, myCollegeJobsOutput, myCollegeProfiles, myCollegeSavedJobs, myCollegeTraining, myCollegeUsers
+from input_API import startup_API, add_training_API, add_job_API, add_usr_API
 import io
 import sys
 import app
@@ -18,6 +19,46 @@ import os
 
 
 # Epic 10 test
+
+def test_add_usr_API():
+    # Test on a user that does not exist in the system.
+    assert(add_usr_API('notReal','firstName','lastName','password1') == 0)
+    addDefaultUser()
+    assert(add_usr_API('defultUser', 'password1', 'John', 'Doe') == 1)  
+    removeDefultUser()
+
+def test_add_job_API():
+    input = []
+    input.append("title")
+    input.append("description")
+    assert(add_job_API(input) == 1)
+
+def test_startup_API():
+    assert(startup_API() == 1)
+    # To see if files were opened in function.
+    file = open("studentAccounts.txt", 'r')
+    assert(file != FileNotFoundError)
+    file.close()
+    file = open("newJobs.txt")
+    assert(file != FileNotFoundError)
+    file.close()
+    file = open("newtraining.txt",'r')
+    assert(file != FileNotFoundError)
+    file.close()
+
+@pytest.mark.parametrize('username, result',
+                         [
+                             ('defult prog', 1), #Check different inputs.
+                             ('1234', 1),
+                             ('CAPS', 1),
+                             ('testing', 1)
+
+                         ]
+
+                         )
+def test_add_training_API(username, result):
+    assert(add_training_API(username) == result)
+
 def test_myCollegeJobsOutput():
     conn = db_conn()
     cur = conn.cursor()
@@ -416,14 +457,6 @@ def displayAllInSystemTest():
         return 0
     else:
         return 1
-
-
-def test_messaging():
-    #assert inboxTesting() == 0
-    #assert planTest() == 1
-    #assert sendTestMessage('jim2301') == 1
-    #assert plusMessageTest('jim2301') == 1
-    assert displayAllInSystemTest() == 1
 
 ############################################################################
 

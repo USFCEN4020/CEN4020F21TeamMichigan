@@ -17,22 +17,27 @@ def add_usr_API(username, first, last, password):
     if cur.fetchone() is None:
         return 0
 
-    planInsert = 'standard'
-    # insert user info
-    auth = f"INSERT INTO auth(username, password, first_name, last_name, plan) VALUES('{username}', '{password}', '{first}', '{last}', '{planInsert}');"
-    control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
-    profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
-    experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
-    education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+    # In the event that the user data is already added.
+    try:
+        planInsert = 'standard'
+        # insert user info
+        auth = f"INSERT INTO auth(username, password, first_name, last_name, plan) VALUES('{username}', '{password}', '{first}', '{last}', '{planInsert}');"
+        control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
+        profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+        experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
+        education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
 
-    cur.execute(auth, (username, password, first, last, planInsert))
-    cur.execute(control, (username, 1, 1, 1, 'English'))
-    cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
-    cur.execute(experiences, (username, 'NULL', 'NULL',
-                'NULL', 'NULL', 'NULL', 'NULL'))
-    cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
+        cur.execute(auth, (username, password, first, last, planInsert))
+        cur.execute(control, (username, 1, 1, 1, 'English'))
+        cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
+        cur.execute(experiences, (username, 'NULL', 'NULL',
+                    'NULL', 'NULL', 'NULL', 'NULL'))
+        cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
 
-    conn.commit()
+        conn.commit()
+    except:
+        print() #User data already added to database.
+        
     return 1
 # Epic #10
 
@@ -44,12 +49,15 @@ def add_job_API(inp):
         if inp[0] == i:
             continue
         des = des + i
-    conn = db_conn()
-    cur = conn.cursor()
-    query = f"INSERT INTO jobs (title, description, employer, location, name, salary) VALUES ('{title}', '{des}', '', '', '', '');"
-    cur.execute(query, (title, des, "",
-                "", "", ""))
-    conn.commit()
+    try:
+        conn = db_conn()
+        cur = conn.cursor()
+        query = f"INSERT INTO jobs (title, description, employer, location, name, salary) VALUES ('{title}', '{des}', '', '', '', '');"
+        cur.execute(query, (title, des, "",
+                    "", "", ""))
+        conn.commit()
+    except:
+        print()
     return 1
 
 # Epic #10
@@ -108,6 +116,8 @@ def startup_API():
     if file != FileNotFoundError:
         for line in file.readline():
             add_training_API(line)
+            
+    return 1
 
 
 # Epic #10

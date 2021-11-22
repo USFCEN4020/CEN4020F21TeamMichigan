@@ -123,19 +123,56 @@ def addDefaultUser():
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
+    planInsert = 'plus'
+    plan = str('plus').lower()
+
     # insert user info
-    auth = f"INSERT INTO auth(username, password, first_name, last_name) VALUES('{username}', '{password}', '{first}', '{last}');"
+    auth = f"INSERT INTO auth(username, password, first_name, last_name, plan) VALUES('{username}', '{password}', '{first}', '{last}', '{planInsert}');"
     control = f"INSERT INTO control(username, email, sms, advertising, language) VALUES('{username}', '{1}', '{1}', '{1}', '{'English'}');"
-    profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{title}', '{major}', '{university}', '{about}');"
+    profile = f"INSERT INTO profile(username, title, major, university, about) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     experiences = f"INSERT INTO experiences(username, title, employer, date_started, date_ended, location, description) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
     education = f"INSERT INTO education(username, school, degree, year_attended) VALUES('{username}', '{'NULL'}', '{'NULL'}', '{'NULL'}');"
 
-    cur.execute(auth, (username, password, first, last))
+    cur.execute(auth, (username, password, first, last, plan))
     cur.execute(control, (username, 1, 1, 1, 'English'))
     cur.execute(profile, (username, 'NULL', 'NULL', 'NULL', 'NULL'))
     cur.execute(experiences, (username, 'NULL', 'NULL',
-                              'NULL', 'NULL', 'NULL', 'NULL'))
+                'NULL', 'NULL', 'NULL', 'NULL'))
     cur.execute(education, (username, 'NULL', 'NULL', 'NULL'))
 
     conn.commit()
     return 1
+    
+def removeDefultUser():
+    username = "defultUser"
+    password = "password1"
+    first = "John"
+    last = "Doe"
+    title = "Mr."
+    major = "Computer Science"
+    university = "USF"
+    about = "Lorem ipus"
+
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+
+    planInsert = 'plus'
+    plan = str('plus').lower()
+    conn = db_conn()
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    auth = f"DELETE FROM auth WHERE username='defultUser';"
+    control = f"DELETE FROM control WHERE username='defultUser';"
+    profile = f"DELETE FROM profile WHERE username='defultUser';"
+    experiences = f"DELETE FROM experiences WHERE username='defultUser';"
+    education = f"DELETE FROM education WHERE username='defultUser';"
+
+    cur.execute(control)
+    cur.execute(profile)
+    cur.execute(experiences)
+    cur.execute(education)
+    cur.execute(auth)
+    conn.commit()
+    return 1
+    
